@@ -42,6 +42,7 @@ export class AuthEffects {
     switchMap(({session}) => {
       if(!session) {
         localStorage.setItem('session', JSON.stringify(null))
+        this.router.navigate(['/auth']);
         return of(null)
       }
 
