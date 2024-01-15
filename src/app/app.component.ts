@@ -9,7 +9,11 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, NzIconModule],
+  imports: [
+    CommonModule,
+    RouterOutlet,
+    NzIconModule,
+  ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })

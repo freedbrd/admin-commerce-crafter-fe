@@ -38,6 +38,18 @@ export class SupabaseService {
     )
   }
 
+  logout() {
+    return from(this.supabase.auth.signOut()).pipe(
+      switchMap(res => {
+        if(res.error) {
+          return throwError(() => res.error)
+        }
+
+        return of(true)
+      })
+    )
+  }
+
   signup({email, password}: ISignupUser) {
     return from(this.supabase.auth.signUp({
       email,
