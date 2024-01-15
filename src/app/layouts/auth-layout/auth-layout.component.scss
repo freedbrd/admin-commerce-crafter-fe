@@ -3,8 +3,26 @@
   align-items: center;
   justify-content: center;
   height: 100vh;
+  background: #f5f5f9;
 
   &::ng-deep {
+    .app-brand {
+      margin-bottom: 1rem;
+      margin-top: 0;
+    }
+
+    p {
+      font-size: 15px;
+    }
+
+    h4 {
+      margin-bottom: .5rem;
+    }
+
+    .welcome {
+      margin-bottom: 1.5rem;
+    }
+
     form {
       min-width: 400px;
     }
