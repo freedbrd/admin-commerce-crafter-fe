@@ -12,3 +12,13 @@ export const selectAuthLoading = createSelector(
   selectAuthState,
   (state) => state.loading
 )
+
+export const selectProfile = createSelector(
+  selectAuthState,
+  (state) => state.profile
+)
+
+export const selectProfileName = createSelector(
+  selectProfile,
+  (profile) => profile?.name || ''
+)

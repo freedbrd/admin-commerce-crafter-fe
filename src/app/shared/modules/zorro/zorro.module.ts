@@ -6,6 +6,8 @@ import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 import { NzLayoutModule } from 'ng-zorro-antd/layout';
 import { NzCardModule } from 'ng-zorro-antd/card';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 
 @NgModule({
   imports: [
@@ -16,6 +18,8 @@ import { NzCardModule } from 'ng-zorro-antd/card';
     NzCheckboxModule,
     NzLayoutModule,
     NzCardModule,
+    NzIconModule,
+    NzDropDownModule,
   ],
   exports: [
     NzFormModule,
@@ -25,6 +29,8 @@ import { NzCardModule } from 'ng-zorro-antd/card';
     NzCheckboxModule,
     NzLayoutModule,
     NzCardModule,
+    NzIconModule,
+    NzDropDownModule,
   ]
 })
 export class ZorroModule { }

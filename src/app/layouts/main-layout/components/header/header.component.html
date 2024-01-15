@@ -1,5 +1,32 @@
 <header>
-  <div class="user" (click)="logout()">
-    user
+  <div class="user">
+    <div class="user-wrapper"
+         nz-dropdown
+         nzTrigger="click"
+         nzPlacement="bottomRight"
+         [nzDropdownMenu]="menu">
+      <div class="circle">
+        <span nz-icon
+              nzType="user"
+              nzTheme="outline"></span>
+      </div>
+
+      <div class="name">
+        {{ profileName$ | async }}
+      </div>
+
+      <span nz-icon
+            nzType="caret-down"
+            nzTheme="outline"></span>
+
+      <nz-dropdown-menu #menu="nzDropdownMenu">
+        <ul nz-menu>
+          <li nz-menu-item (click)="logout()">
+            <span nz-icon nzType="logout" nzTheme="outline"></span>
+            <span class="menu-item-label">Logout</span>
+          </li>
+        </ul>
+      </nz-dropdown-menu>
+    </div>
   </div>
 </header>
