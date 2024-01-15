@@ -12,6 +12,8 @@ import { provideState, provideStore } from '@ngrx/store';
 import { provideEffects } from '@ngrx/effects';
 import { authReducer } from './shared/ngrx/auth/auth.reducer';
 import { AuthEffects } from './shared/ngrx/auth/auth.effects';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { environment } from '../environments/environment';
 
 registerLocaleData(en);
 
@@ -30,6 +32,11 @@ export const appConfig: ApplicationConfig = {
     }),
     provideEffects([
       AuthEffects
-    ])
+    ]),
+    importProvidersFrom([
+      StoreDevtoolsModule.instrument({
+        maxAge: 25
+      })
+    ]),
   ],
 };

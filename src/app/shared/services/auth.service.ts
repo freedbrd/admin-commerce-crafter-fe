@@ -17,6 +17,7 @@ export class AuthService {
   ) {
 
     this.supabaseService.onAuthStateChange((event, session) => {
+      console.log(event, session);
       if (event === 'INITIAL_SESSION') {
         this.store.dispatch(setSession({
           session
@@ -29,6 +30,10 @@ export class AuthService {
 
   signup(data: ISignupUser) {
     return this.supabaseService.signup(data);
+  }
+
+  logout() {
+    return this.supabaseService.logout();
   }
 
   createProfile(data: ISignupUser, user: User): Observable<IProfile[]> {

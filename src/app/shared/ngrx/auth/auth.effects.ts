@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import {
-  login,
+  login, logout,
   setProfile,
   setSession,
   signup,
@@ -100,6 +100,18 @@ export class AuthEffects {
       ),
     {dispatch: false},
   );
+
+  logout$ = createEffect(() => this.actions$.pipe(
+    ofType(logout),
+    switchMap(() => this.authService.logout()),
+    map(() => setSession({
+      session: null
+    })),
+    tap(() => {
+      localStorage.setItem('session', JSON.stringify(null));
+      this.router.navigate(['/auth']);
+    })
+  ))
 
   constructor(
     private actions$: Actions,
