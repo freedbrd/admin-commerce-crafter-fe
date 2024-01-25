@@ -1,0 +1,57 @@
+<h2>Business Profiles</h2>
+<div nz-row
+     [nzGutter]="[20, 20]">
+  <div nz-col
+       nzSpan="24">
+    <div class="action">
+      <button nz-button
+              (click)="create()"
+              nzType="primary">Create
+      </button>
+    </div>
+  </div>
+  <div nz-col
+       nzSpan="24">
+    <nz-table #basicTable
+              [nzData]="(businessProfiles$ | async) || []">
+      <thead>
+      <tr>
+        <th>Title</th>
+        <th nzWidth="250px">Status</th>
+        <th nzWidth="250px">Type</th>
+        <th nzWidth="80px"></th>
+      </tr>
+      </thead>
+      <tbody>
+        @for (data of basicTable.data; track data.id) {
+          <tr (click)="select(data)">
+            <td>{{ data.name }}</td>
+            <td>{{ data.active ? 'Active' : 'Inactive' }}</td>
+            <td>{{ data.type }}</td>
+            <td (click)="$event.stopPropagation()">
+              <span style="display: block; width: 100%; height: 100%;font-size: 25px;"
+                    nz-icon
+                    nzType="ellipsis"
+                    nzTheme="outline"
+                    nz-dropdown
+                    nzPlacement="bottomRight"
+                    nzTrigger="click"
+                    [nzDropdownMenu]="menu"></span>
+              <nz-dropdown-menu #menu="nzDropdownMenu">
+                <ul style="width: 150px"
+                    nz-menu>
+                  <li nz-menu-item
+                      (click)="edit(data)">Edit
+                  </li>
+                  <li nz-menu-item
+                      (click)="delete(data)">Delete
+                  </li>
+                </ul>
+              </nz-dropdown-menu>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </nz-table>
+  </div>
+</div>

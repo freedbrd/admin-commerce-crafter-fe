@@ -50,11 +50,6 @@ export class AuthEffects {
       return this.authService.getProfile(session)
     }),
     map((res) => {
-      if (res) {
-        this.router.navigate(['/']);
-      }
-
-
 
       return setProfile({
         profile: res

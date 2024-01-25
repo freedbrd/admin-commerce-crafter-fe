@@ -14,6 +14,12 @@ import { authReducer } from './shared/ngrx/auth/auth.reducer';
 import { AuthEffects } from './shared/ngrx/auth/auth.effects';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from '../environments/environment';
+import {
+  BusinessProfileEffects
+} from './shared/ngrx/business-profile/business-profile.effects';
+import {
+  businessProfileReducer
+} from './shared/ngrx/business-profile/business-profile.reducer';
 
 registerLocaleData(en);
 
@@ -30,8 +36,13 @@ export const appConfig: ApplicationConfig = {
       name: 'auth',
       reducer: authReducer
     }),
+    provideState({
+      name: 'businessProfiles',
+      reducer: businessProfileReducer
+    }),
     provideEffects([
-      AuthEffects
+      AuthEffects,
+      BusinessProfileEffects
     ]),
     importProvidersFrom([
       StoreDevtoolsModule.instrument({

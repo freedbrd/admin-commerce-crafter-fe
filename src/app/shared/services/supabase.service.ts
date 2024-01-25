@@ -19,35 +19,36 @@ export class SupabaseService {
       environment.supabaseKey);
   }
 
-  onAuthStateChange(callback: (event: AuthChangeEvent, session: Session | null) => void | Promise<void>) {
-    this.supabase.auth.onAuthStateChange(callback)
+  onAuthStateChange(callback: (
+    event: AuthChangeEvent, session: Session | null) => void | Promise<void>) {
+    this.supabase.auth.onAuthStateChange(callback);
   }
 
   login(email: string, password: string) {
     return from(this.supabase.auth.signInWithPassword({
       email,
-      password
+      password,
     })).pipe(
       switchMap(res => {
-        if(res.error) {
-          return throwError(() => res.error)
+        if (res.error) {
+          return throwError(() => res.error);
         }
 
-        return of(res.data)
-      })
-    )
+        return of(res.data);
+      }),
+    );
   }
 
   logout() {
     return from(this.supabase.auth.signOut()).pipe(
       switchMap(res => {
-        if(res.error) {
-          return throwError(() => res.error)
+        if (res.error) {
+          return throwError(() => res.error);
         }
 
-        return of(true)
-      })
-    )
+        return of(true);
+      }),
+    );
   }
 
   signup({email, password}: ISignupUser) {
@@ -55,34 +56,33 @@ export class SupabaseService {
       email,
       password,
     })).pipe(
-        switchMap(res => {
-          if(res.error) {
-            return throwError(() => res.error)
-          }
+      switchMap(res => {
+        if (res.error) {
+          return throwError(() => res.error);
+        }
 
-          return of(res.data)
-        })
-    )
+        return of(res.data);
+      }),
+    );
   }
 
   insertAndSelect<T>(table: string, columns: any, selectFields: string) {
-    return from(this.supabase.from(table).insert(columns).select(selectFields))
-    .pipe(
-      switchMap(res => {
-        return res.error ? throwError(() => res.error) : of(res)
-      }),
-      map((response) => {
-          return response.data as T;
-        },
-      ),
-    );
+    return from(this.supabase.from(table).insert(columns).select(selectFields)).
+      pipe(
+        switchMap(res => {
+          return res.error ? throwError(() => res.error) : of(res);
+        }),
+        map((response) => {
+            return response.data as T;
+          },
+        ),
+      );
   }
 
   select<T>(table: string) {
-    return from(this.supabase.from(table).select('*'))
-    .pipe(
+    return from(this.supabase.from(table).select('*')).pipe(
       switchMap(res => {
-        return res.error ? throwError(() => res.error) : of(res)
+        return res.error ? throwError(() => res.error) : of(res);
       }),
       map((response) => {
           return response.data as T;
@@ -91,11 +91,24 @@ export class SupabaseService {
     );
   }
 
-  selectById<T>(table: string, match: string, eq = 'id') {
-    return from(this.supabase.from(table).select('*').eq(eq, match).single())
-    .pipe(
+  selectById<T>(table: string, match: string, eq = 'id', joinString = '') {
+    return from(this.supabase.from(table).select(`* ${joinString ? ', ' + joinString : ''}`).eq(eq, match).single()).
+      pipe(
+        switchMap(res => {
+          return res.error ? throwError(() => res.error) : of(res);
+        }),
+        map((response) => {
+            return response.data as T;
+          },
+        ),
+      );
+  }
+
+  update<T>(table: string, data: T, match: string, eq = 'id') {
+    return from(this.supabase.from(table).update(data).eq(eq, match).select().single(),
+    ).pipe(
       switchMap(res => {
-        return res.error ? throwError(() => res.error) : of(res)
+        return res.error ? throwError(() => res.error) : of(res);
       }),
       map((response) => {
           return response.data as T;
@@ -103,4 +116,18 @@ export class SupabaseService {
       ),
     );
   }
+
+  delete<T>(table: string, match: string, eq = 'id') {
+    return from(this.supabase.from(table).delete().eq(eq, match)).pipe(
+      switchMap(res => {
+        return res.error ? throwError(() => res.error) : of(res);
+      }),
+      map((response) => {
+          return response.data as T;
+        },
+      ),
+    );
+  }
+
+
 }

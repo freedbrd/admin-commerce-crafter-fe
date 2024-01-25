@@ -8,6 +8,10 @@ import { NzLayoutModule } from 'ng-zorro-antd/layout';
 import { NzCardModule } from 'ng-zorro-antd/card';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
+import { NzTableModule } from 'ng-zorro-antd/table';
+import { NzModalModule } from 'ng-zorro-antd/modal';
+import { NzSelectModule } from 'ng-zorro-antd/select';
+// import { NzSelectModule } from 'ng-zorro-antd/select';
 
 @NgModule({
   imports: [
@@ -20,6 +24,9 @@ import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
     NzCardModule,
     NzIconModule,
     NzDropDownModule,
+    NzTableModule,
+    NzModalModule,
+    NzSelectModule,
   ],
   exports: [
     NzFormModule,
@@ -31,6 +38,9 @@ import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
     NzCardModule,
     NzIconModule,
     NzDropDownModule,
+    NzTableModule,
+    NzModalModule,
+    NzSelectModule,
   ]
 })
 export class ZorroModule { }

@@ -6,7 +6,6 @@ import { authGuard } from './shared/guards/auth.guard';
 export const routes: Routes = [
   {
     path: '',
-    pathMatch: 'full',
     loadComponent: () => import('./layouts/main-layout/main-layout.component').then(c => c.MainLayoutComponent),
     children: MAIN_LAYOUT_ROUTES,
     canActivate: [authGuard]

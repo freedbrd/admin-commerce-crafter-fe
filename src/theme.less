@@ -1,4 +1,3 @@
-
 // Custom Theming for NG-ZORRO
 // For more information: https://ng.ant.design/docs/customize-theme/en
 @import "../node_modules/ng-zorro-antd/ng-zorro-antd.less";
@@ -17,11 +16,18 @@
 
 @input-bg: #fff;
 
+
+@layout-header-height: auto;
+
 .mixin-custom-input-style(@border-radius: 0.375rem, @input-color: @input-bg) {
   .ant-input-group > .ant-input:first-child,
-  .ant-input-group-addon:first-child {
+  .ant-input-group > .ant-input:last-child,
+  .ant-input-group-addon:first-child,
+  .ant-input-group-addon:last-child {
     border-top-right-radius: @border-radius;
     border-bottom-right-radius: @border-radius;
+    border-top-left-radius: @border-radius;
+    border-bottom-left-radius: @border-radius;
     background-color: @input-color;
 
     // Reset Select's style in addon
@@ -32,5 +38,46 @@
   }
 }
 
+.set-input-select-height(@height) {
+  // Apply to nz-input
+  .ant-input,
+  .ant-input-affix-wrapper {
+    height: @height;
+    // If needed, adjust the padding here to ensure text is centered
+  }
+
+  // Apply to nz-select
+  .ant-select-selector {
+    height: @height;
+    // Assuming the content should be centered, set a line-height that works for your design
+    line-height: @height;
+  }
+
+  // Specific to single select
+  .ant-select-single:not(.ant-select-customize-input) .ant-select-selector {
+    height: @height;
+    line-height: @height;
+  }
+
+  // Specific to multiple select
+  .ant-select-multiple .ant-select-selection-search-input,
+  .ant-select-multiple .ant-select-selector {
+    min-height: @height;
+    // If needed, adjust the padding here to ensure text is centered
+  }
+
+  .ant-select-single:not(.ant-select-customize-input) .ant-select-selector .ant-select-selection-search-input {
+    height: @height;
+  }
+
+  // Apply the height to the selection items and placeholder
+  .ant-select-selection-item,
+  .ant-select-selection-placeholder, .ant-select-single .ant-select-selector .ant-select-selection-item, .ant-select-single .ant-select-selector .ant-select-selection-placeholder {
+    line-height: @height;
+  }
+}
+
+
+.set-input-select-height(40px);
 .mixin-custom-input-style();
 
