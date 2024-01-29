@@ -13,7 +13,7 @@ import {
   createBusinessProfile,
   deleteBusinessProfileRequest,
   editBusinessProfileRequest,
-  getBusinessProfiles,
+  getBusinessProfilesRequest,
 } from '../../../../shared/ngrx/business-profile/business-profile.actions';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import {
@@ -43,7 +43,7 @@ export class BusinessProfilesComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.store.dispatch(getBusinessProfiles())
+    this.store.dispatch(getBusinessProfilesRequest());
   }
 
   create() {

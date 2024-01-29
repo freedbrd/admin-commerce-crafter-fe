@@ -1,1 +1,16 @@
-<h2>Business Profile NAME</h2>
+<h2>Business Profile {{currentBusinessProfileName$ | async}}</h2>
+
+<div nz-row [nzGutter]="[15, 15]">
+    <div nz-col nzSpan="24">
+        <nz-card nzTitle="Services" [nzBordered]="false">
+            <app-business-profile-services></app-business-profile-services>
+        </nz-card>
+    </div>
+    <div nz-col nzSpan="24">
+        <nz-card nzTitle="Staff" [nzBordered]="false">
+
+        </nz-card>
+    </div>
+</div>
+
+

@@ -22,8 +22,8 @@ export class BusinessProfileService {
     return this.supabaseService.select<IBusinessProfile[]>(this.tableName)
   }
 
-  getBusinessProfileById(data: IBusinessProfile) {
-    return this.supabaseService.selectById(this.tableName, data?.id)
+  getBusinessProfileById(id: string) {
+    return this.supabaseService.selectById<IBusinessProfile>(this.tableName, id, 'id', 'services(*)')
   }
 
   updateBusinessProfile(data: IBusinessProfile) {

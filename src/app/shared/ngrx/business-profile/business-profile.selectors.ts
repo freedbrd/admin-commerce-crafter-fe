@@ -12,3 +12,18 @@ export const businessProfileSelector = createSelector(
   businessProfileState,
   selectAll
 )
+
+export const currentBusinessProfile = createSelector(
+  businessProfileState,
+  (state) => state.currentBusinessProfile
+)
+
+export const currentBusinessProfileName = createSelector(
+  currentBusinessProfile,
+  (businessProfile) => businessProfile?.name || ''
+)
+
+export const businessProfileServices = createSelector(
+  currentBusinessProfile,
+  (businessProfile) => businessProfile?.services || []
+)

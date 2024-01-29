@@ -1,0 +1,43 @@
+<div nz-row [nzGutter]="[15, 15]">
+    <div nz-col nzSpan="24">
+        <nz-table #table [nzData]="(profileServicesSelector$ | async) || []">
+            <thead>
+                <tr>
+                  <th>Title</th>
+                  <th nzWidth="250px">Price</th>
+                  <th nzWidth="250px">Active</th>
+                  <th nzWidth="80px"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (data of table.data; track data.id) {
+                  <tr>
+                    <td>{{ data.name }}</td>
+                    <td>{{ data.price }}</td>
+                    <td>{{ data.active ? 'Active' : 'Inactive' }}</td>
+                    <td (click)="$event.stopPropagation()">
+                      <span style="display: block; width: 100%; height: 100%;font-size: 25px;"
+                            nz-icon
+                            nzType="ellipsis"
+                            nzTheme="outline"
+                            nz-dropdown
+                            nzPlacement="bottomRight"
+                            nzTrigger="click"
+                            [nzDropdownMenu]="menu"></span>
+                      <nz-dropdown-menu #menu="nzDropdownMenu">
+                        <ul style="width: 150px"
+                            nz-menu>
+                          <li nz-menu-item
+                              >Edit
+                          </li>
+                          <li (click)="delete(data)" nz-menu-item>Delete
+                          </li>
+                        </ul>
+                      </nz-dropdown-menu>
+                    </td>
+                  </tr>
+                }
+              </tbody>
+        </nz-table>
+    </div>
+</div>

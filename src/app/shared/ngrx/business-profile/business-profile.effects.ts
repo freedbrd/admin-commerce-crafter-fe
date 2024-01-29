@@ -1,3 +1,4 @@
+import { setProfileServices } from './../business-profile-services/profile-services.actions';
 import { Injectable } from '@angular/core';
 import {
   BusinessProfileService
@@ -9,7 +10,9 @@ import {
   deleteBusinessProfileSuccess,
   editBusinessProfileRequest,
   editBusinessProfileSuccess,
-  getBusinessProfiles,
+  getBusinessProfileById,
+  getBusinessProfilesRequest,
+  setBusinessProfileById,
   setBusinessProfiles,
 } from './business-profile.actions';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
@@ -20,12 +23,13 @@ import { PostgrestError } from '@supabase/supabase-js';
 
 @Injectable()
 export class BusinessProfileEffects {
-  getBusinessProfiles$ = createEffect(() => this.actions$.pipe(
-    ofType(getBusinessProfiles),
-    switchMap(() => this.businessProfileService.getBusinessProfiles()),
-    map((businessProfiles: IBusinessProfile[]) => setBusinessProfiles({
-      businessProfiles
-    }))
+  getBusinessProfilesRequest$ = createEffect(() => this.actions$.pipe(
+    ofType(getBusinessProfilesRequest),
+    switchMap(() => this.businessProfileService.getBusinessProfiles().pipe(
+      map((businessProfiles: IBusinessProfile[]) => setBusinessProfiles({
+        businessProfiles
+      })),
+    )),
   ))
 
   createBusinessProfile$ = createEffect(() => this.actions$.pipe(
@@ -69,6 +73,20 @@ export class BusinessProfileEffects {
         return throwError(() => err)
       })
     ))
+  ))
+
+  getBusinessProfileById$ = createEffect(() => this.actions$.pipe(
+    ofType(getBusinessProfileById),
+    switchMap(({id}) => {
+      return this.businessProfileService.getBusinessProfileById(id).pipe(
+        map(businessProfile => setBusinessProfileById({businessProfile}))
+      )
+    })
+  ))
+
+  setProfileServices$ = createEffect(() => this.actions$.pipe(
+    ofType(setBusinessProfileById),
+    map(({businessProfile}) => setProfileServices({profileServices: businessProfile.services}))
   ))
 
   constructor(
