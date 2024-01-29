@@ -14,12 +14,14 @@ import {
   deleteBusinessProfileRequest,
   editBusinessProfileRequest,
   getBusinessProfilesRequest,
+  setBusinessProfileById,
 } from '../../../../shared/ngrx/business-profile/business-profile.actions';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import {
   BusinessProfileModalComponent,
 } from '../business-profile-modal/business-profile-modal.component';
 import { Router } from '@angular/router';
+import { setProfileServices } from '../../../../shared/ngrx/business-profile-services/profile-services.actions';
 
 @Component({
   selector: 'app-business-profiles',
@@ -43,7 +45,7 @@ export class BusinessProfilesComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.store.dispatch(getBusinessProfilesRequest());
+    this.getBusinessProfiles()
   }
 
   create() {
@@ -56,7 +58,7 @@ export class BusinessProfilesComponent implements OnInit {
     nzModalRef.afterClose.pipe(
       take(1)
     ).subscribe((businessProfile: IBusinessProfile) => {
-      if(!businessProfile) {
+      if (!businessProfile) {
         return;
       }
 
@@ -80,7 +82,7 @@ export class BusinessProfilesComponent implements OnInit {
     nzModalRef.afterClose.pipe(
       take(1)
     ).subscribe((updatedBusinessProfile: IBusinessProfile) => {
-      if(!updatedBusinessProfile) {
+      if (!updatedBusinessProfile) {
         return;
       }
 
@@ -101,5 +103,12 @@ export class BusinessProfilesComponent implements OnInit {
     this.store.dispatch(deleteBusinessProfileRequest({
       businessProfile
     }))
+  }
+
+  private getBusinessProfiles() {
+    [setProfileServices({ profileServices: [] }), setBusinessProfileById({ businessProfile: null })]
+      .forEach((action) => this.store.dispatch(action));
+
+    this.store.dispatch(getBusinessProfilesRequest());
   }
 }

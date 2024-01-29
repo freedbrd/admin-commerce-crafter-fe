@@ -7,11 +7,12 @@ import { Store } from '@ngrx/store';
 import { businessProfileServices } from '../../../../../../shared/ngrx/business-profile/business-profile.selectors';
 import { deleteServiceRequest } from '../../../../../../shared/ngrx/business-profile-services/profile-services.actions';
 import { profileServicesSelector } from '../../../../../../shared/ngrx/business-profile-services/profile-services.selector';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-business-profile-services',
   standalone: true,
-  imports: [CommonModule, ZorroModule],
+  imports: [CommonModule, ZorroModule, RouterModule],
   templateUrl: './business-profile-services.component.html',
   styleUrl: './business-profile-services.component.scss'
 })
@@ -23,6 +24,8 @@ export class BusinessProfileServicesComponent {
   ) {
     this.profileServicesSelector$ = this.store.select(profileServicesSelector)
   }
+
+  create() {}
 
   delete(profileServices: IProfileService) {
     this.store.dispatch(deleteServiceRequest({

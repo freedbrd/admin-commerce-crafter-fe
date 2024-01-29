@@ -1,0 +1,48 @@
+
+
+<form nz-row [nzGutter]="[15, 15]">
+    <div nz-col nzSpan="24">
+        <h2>Profile Service: New</h2>
+    </div>
+    <div nz-col nzSpan="24">
+        <nz-form-item>
+            <nz-form-label nzSpan="24">Main Image</nz-form-label>
+            <nz-form-control nzSpan="24">
+                <app-image-file-picker></app-image-file-picker>
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label nzSpan="24">Service name</nz-form-label>
+            <nz-form-control nzSpan="24">
+                <input nz-input type="text">
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label nzSpan="24">Price</nz-form-label>
+            <nz-form-control nzSpan="24">
+                <input nz-input min="0" type="number">
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label nzSpan="24">Description</nz-form-label>
+            <nz-form-control nzSpan="24">
+                <textarea nz-input rows="10"></textarea>
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label nzSpan="24">Staff</nz-form-label>
+            <nz-form-control nzSpan="24">
+                <textarea nz-input rows="10"></textarea>
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label nzSpan="24">Portfolio</nz-form-label>
+            <nz-form-control nzSpan="24">
+                <textarea nz-input rows="10"></textarea>
+            </nz-form-control>
+        </nz-form-item>
+    </div>
+    <div nz-col nzSpan="24">
+        <button nz-button nzType="primary">Save</button>
+    </div>
+</form>

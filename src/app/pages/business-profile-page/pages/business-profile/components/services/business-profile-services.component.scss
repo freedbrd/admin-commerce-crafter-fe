@@ -3,3 +3,11 @@ nz-table {
         cursor: pointer;
     }
 }
+
+.action {
+    display: flex;
+
+    button {
+        margin-left: auto;
+    }
+}

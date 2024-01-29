@@ -16,7 +16,7 @@ import { setProfileServices } from '../../../../shared/ngrx/business-profile-ser
   templateUrl: './business-profile.component.html',
   styleUrl: './business-profile.component.scss'
 })
-export class BusinessProfileComponent implements OnInit, OnDestroy {
+export class BusinessProfileComponent implements OnInit {
   currentBusinessProfileName$: Observable<string>;
 
   constructor(
@@ -30,11 +30,6 @@ export class BusinessProfileComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.getCurrentBusinessProfile();
-  }
-
-  ngOnDestroy(): void {
-    [setProfileServices({profileServices: []}), setBusinessProfileById({businessProfile: null})]
-      .forEach((action) => this.store.dispatch(action));
   }
 
   private getCurrentBusinessProfile() {
