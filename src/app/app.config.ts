@@ -35,26 +35,27 @@ export const appConfig: ApplicationConfig = {
     provideAnimations(),
     provideStore(),
     provideState({
-      name: 'auth',
-      reducer: authReducer
+        name: 'auth',
+        reducer: authReducer
     }),
     provideState({
-      name: 'businessProfiles',
-      reducer: businessProfileReducer
+        name: 'businessProfiles',
+        reducer: businessProfileReducer
     }),
     provideState({
-      name: 'profileServices',
-      reducer: profileServicesReducer
+        name: 'profileServices',
+        reducer: profileServicesReducer
     }),
     provideEffects([
-      AuthEffects,
-      BusinessProfileEffects,
-      ProfileServiceEffects,
+        AuthEffects,
+        BusinessProfileEffects,
+        ProfileServiceEffects,
     ]),
     importProvidersFrom([
-      StoreDevtoolsModule.instrument({
-        maxAge: 25
-      })
+        StoreDevtoolsModule.instrument({
+            maxAge: 25
+        })
     ]),
-  ],
+    provideAnimations()
+],
 };

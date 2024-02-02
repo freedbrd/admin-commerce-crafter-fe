@@ -1,0 +1,28 @@
+<div cdkDropListGroup class="group-wrapper">
+    <div class="transfer-container">
+        <h2>Available Staff</h2>
+
+        <div cdkDropList
+            [cdkDropListData]="availableItems"
+            class="transfer-list"
+            (cdkDropListDropped)="drop($event)">
+            @for (item of availableItems; track item) {
+                <div class="transfer-box" cdkDrag>{{item?.label}}</div>
+            }
+        </div>
+    </div>
+
+    <div class="transfer-container">
+        <h2>Selected Staff</h2>
+
+        <div cdkDropList
+            [cdkDropListData]="selectedItems"
+            class="transfer-list"
+            (cdkDropListDropped)="drop($event)">
+            @for (item of selectedItems; track item) {
+                <div class="transfer-box" cdkDrag>{{item?.label}}</div>
+            }
+        </div>
+    </div>
+</div>
+  
