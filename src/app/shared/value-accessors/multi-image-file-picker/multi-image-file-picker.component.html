@@ -1,0 +1,13 @@
+<button (click)="file.click()" type="button" class="add-image" nz-button nzType="primary">Add images</button>
+
+<div class="images-box">
+    @for(image of images; track image) {
+        <div class="image-wrapper" (click)="deleteImage(image)">
+            <img [src]="image">
+            <div class="hover-overlay">
+                <span nz-icon nzType="delete" nzTheme="outline"></span>
+            </div>
+        </div>
+    }
+</div>
+<input (change)="onFilesSelected($event, file)" hidden #file multiple type="file" [accept]="acceptableFileTypes">

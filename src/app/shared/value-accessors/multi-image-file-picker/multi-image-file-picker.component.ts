@@ -1,31 +1,29 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, forwardRef } from '@angular/core';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { ZorroModule } from '../../modules/zorro/zorro.module';
-import { ControlValueAccessor, FormControl, NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { NzNotificationService } from 'ng-zorro-antd/notification';
 
 @Component({
-  selector: 'app-image-file-picker',
+  selector: 'app-multi-image-file-picker',
   standalone: true,
   imports: [CommonModule, ZorroModule],
-  templateUrl: './image-file-picker.component.html',
-  styleUrl: './image-file-picker.component.scss',
+  templateUrl: './multi-image-file-picker.component.html',
+  styleUrl: './multi-image-file-picker.component.scss',
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => ImageFilePickerComponent),
+      useExisting: forwardRef(() => MultiImageFilePickerComponent),
       multi: true
     }
   ]
 })
-export class ImageFilePickerComponent implements ControlValueAccessor {
-  @Input() multiple = false;
+export class MultiImageFilePickerComponent implements ControlValueAccessor {
   @Input() acceptableFileTypes: string | string[] = 'image/jpeg, image/png';
 
-  image: string = '';
-
-  onChange: any = () => { };
-  onTouched: any = () => { };
+  images: string[] = [];
+  
+  onChange: any = () => {};
+  onTouched: any = () => {};
 
   get value(): any {
     return this._value;
@@ -39,26 +37,32 @@ export class ImageFilePickerComponent implements ControlValueAccessor {
 
   private _value: any = '';
 
-  onFilesSelected(event: Event) {
+  deleteImage(image: string) {
+    this.images = this.images.filter(item => item !== image);
+
+    this.onChange(this.images)
+  }
+
+  onFilesSelected(event: Event, fileElement: HTMLInputElement) {
     const element = event.currentTarget as HTMLInputElement;
     let files: FileList | null = element.files;
 
-    const [firstFile] = Array.from(files);
-
-      const reader = new FileReader();
-      
-      reader.onload = (e: any) => {
-        this.image = e?.target?.result || '';
-        this.onChange(this.image)
+    if (files?.length) {
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        if (true) {
+          const reader = new FileReader();
+          reader.onload = (e: any) => {
+            this.images.push(e.target.result);
+            this.onChange(this.images);
+          };
+          reader.readAsDataURL(file);
+        }
       }
+    }
 
-      reader.readAsDataURL(firstFile);
+    fileElement.value = null
     
-  }
-
-  deleteImage() {
-    this.image = '';
-    this.onChange(this.image)
   }
 
   writeValue(value: any): void {
@@ -78,4 +82,5 @@ export class ImageFilePickerComponent implements ControlValueAccessor {
   setDisabledState?(isDisabled: boolean): void {
     // Implement this method to handle the disabled state
   }
+
 }

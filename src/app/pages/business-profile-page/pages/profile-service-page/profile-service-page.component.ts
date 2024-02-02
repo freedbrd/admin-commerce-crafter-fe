@@ -3,11 +3,12 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ZorroModule } from '../../../../shared/modules/zorro/zorro.module';
 import { ImageFilePickerComponent } from '../../../../shared/value-accessors/image-file-picker/image-file-picker.component';
+import { MultiImageFilePickerComponent } from '../../../../shared/value-accessors/multi-image-file-picker/multi-image-file-picker.component';
 
 @Component({
   selector: 'app-profile-service-page',
   standalone: true,
-  imports: [CommonModule, ZorroModule, ImageFilePickerComponent],
+  imports: [CommonModule, ZorroModule, ImageFilePickerComponent, MultiImageFilePickerComponent],
   templateUrl: './profile-service-page.component.html',
   styleUrl: './profile-service-page.component.scss'
 })
