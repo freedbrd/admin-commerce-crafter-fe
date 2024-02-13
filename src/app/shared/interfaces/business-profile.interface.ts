@@ -13,7 +13,7 @@ export interface IProfileService {
   name: string;
   price: number;
   description: string;
-  portfolio: IServicePortfolio[];
+  showcase_images: IServiceShowcaseImage[];
   main_image: string;
   active: boolean;
   business_profile_id: string;
@@ -21,15 +21,10 @@ export interface IProfileService {
   serviceResourceIds: string[]
 }
 
-export interface IServicePortfolio {
+export interface IServiceShowcaseImage {
   id: string;
   url: string;
   description: string;
-}
-
-export enum BusinessProfileType {
-  SERVICE = 'service',
-  PRODUCT = 'product'
 }
 
 export interface IServiceResource {
@@ -47,5 +42,9 @@ export interface IResourceAvailability {
   date: string;
   startTime: string;
   endTime: string;
-  status: string;
+}
+
+export enum BusinessProfileType {
+  SERVICE = 'service',
+  PRODUCT = 'product'
 }
