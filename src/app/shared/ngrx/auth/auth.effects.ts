@@ -70,6 +70,7 @@ export class AuthEffects {
     map(res => setSession({
       session: res?.session
     })),
+    tap(() => this.router.navigate([''])),
     catchError(err => {
       this.nzNotificationService.error(err.type || 'Error', 'Invalid login credentials');
       return throwError(() => err)
