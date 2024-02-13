@@ -56,6 +56,7 @@ export class BusinessProfileModalComponent implements OnInit {
     this.form = this.fb.group({
       name: [this.businessProfile?.name ?? '', [Validators.required]],
       type: this.businessProfile?.type ?? 'service',
+      currency: this.businessProfile?.currency ?? '',
     });
   }
 }
