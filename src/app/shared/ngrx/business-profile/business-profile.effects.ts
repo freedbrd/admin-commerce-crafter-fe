@@ -84,6 +84,11 @@ export class BusinessProfileEffects {
     })
   ))
 
+  setProfileServices$ = createEffect(() => this.actions$.pipe(
+    ofType(setBusinessProfileById),
+    map(({businessProfile}) => setProfileServices({profileServices: businessProfile?.services || []}))
+  ))
+
   constructor(
     private businessProfileService: BusinessProfileService,
     private actions$: Actions,

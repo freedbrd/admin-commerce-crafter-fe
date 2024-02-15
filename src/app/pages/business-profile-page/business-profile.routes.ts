@@ -7,11 +7,11 @@ export const businessProfileRoutes: Routes = [
     pathMatch: 'full',
   },
   {
-    path: ':id',
+    path: ':businessId',
     loadComponent: () => import('../business-profile-page/pages/business-profile/business-profile.component').then(c => c.BusinessProfileComponent)
   },
   {
-    path: ':id/service/:id',
+    path: ':businessId/service/:serviceId',
     loadComponent: () => import('../business-profile-page/pages/profile-service-page/profile-service-page.component').then(c => c.ProfileServicePageComponent)
   },
 ]

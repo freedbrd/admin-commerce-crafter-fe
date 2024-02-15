@@ -5,7 +5,15 @@ import {
   SupabaseClient,
 } from '@supabase/supabase-js';
 import { environment } from '../../../environments/environment';
-import { from, map, of, switchMap, throwError } from 'rxjs';
+import {
+  catchError, forkJoin,
+  from,
+  map,
+  mergeMap,
+  of,
+  switchMap,
+  throwError,
+} from 'rxjs';
 import { ISignupUser } from '../interfaces/profile.interface';
 
 @Injectable({
@@ -92,7 +100,10 @@ export class SupabaseService {
   }
 
   selectById<T>(table: string, match: string, eq = 'id', joinString = '') {
-    return from(this.supabase.from(table).select(`* ${joinString ? ', ' + joinString : ''}`).eq(eq, match).single()).
+    return from(this.supabase.from(table).
+      select(`* ${joinString ? ', ' + joinString : ''}`).
+      eq(eq, match).
+      single()).
       pipe(
         switchMap(res => {
           return res.error ? throwError(() => res.error) : of(res);
@@ -105,7 +116,8 @@ export class SupabaseService {
   }
 
   update<T>(table: string, data: T, match: string, eq = 'id') {
-    return from(this.supabase.from(table).update(data).eq(eq, match).select().single(),
+    return from(
+      this.supabase.from(table).update(data).eq(eq, match).select(),
     ).pipe(
       switchMap(res => {
         return res.error ? throwError(() => res.error) : of(res);
@@ -129,5 +141,33 @@ export class SupabaseService {
     );
   }
 
+  uploadImages(filePath: string, fileName: string, files: File[] | Blob[], folder = '') {
+    const uploadObservables = files.map((file, index) => {
+      const fileName = `${Date.now()}-${index}`;
+      return from(this.supabase.storage.from('assets').upload(`${filePath}/${fileName}`, file, {
+        upsert: true,
+      })).pipe(
+        map(({ error }) => {
+          if (error) {
+            throw error;
+          }
+          return {
+            fileName: fileName,
+            filePath: `${filePath}/${fileName}`,
+            fileUrl: `${environment.supabaseUrl}/storage/v1/object/public/${folder}${filePath}/${fileName}`,
+          };
+        }),
+        catchError(error => of({
+          fileName: fileName,
+          filePath: `${filePath}/${fileName}`,
+          fileUrl: `${environment.supabaseUrl}/storage/v1/object/public/${folder}${filePath}/${fileName}`,
+          error: error.message
+        })),
+      );
+    });
 
+    return forkJoin(uploadObservables).pipe(
+      catchError(error => throwError(() => new Error(`Upload failed: ${error.message}`)))
+    );
+  }
 }

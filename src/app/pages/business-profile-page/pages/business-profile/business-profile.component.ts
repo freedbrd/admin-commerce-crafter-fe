@@ -33,10 +33,10 @@ export class BusinessProfileComponent implements OnInit {
   }
 
   private getCurrentBusinessProfile() {
-    const {id} = this.activatedRoute.snapshot.params;
+    const {businessId} = this.activatedRoute.snapshot.params;
 
     this.store.dispatch(getBusinessProfileById({
-      id
+      id: businessId
     }))
   }
 }

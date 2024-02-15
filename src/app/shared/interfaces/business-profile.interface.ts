@@ -13,12 +13,12 @@ export interface IProfileService {
   name: string;
   price: number;
   description: string;
-  showcase_images: IServiceShowcaseImage[];
+  showcase_images: string[];
   main_image: string;
   active: boolean;
   business_profile_id: string;
   user_id: string;
-  serviceResourceIds: string[]
+  service_resource_ids: string[]
 }
 
 export interface IServiceShowcaseImage {

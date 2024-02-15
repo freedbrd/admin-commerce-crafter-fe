@@ -22,3 +22,8 @@ export const selectProfileName = createSelector(
   selectProfile,
   (profile) => profile?.name || ''
 )
+
+export const selectUserId = createSelector(
+  selectProfile,
+  (profile) => profile?.user_id
+)
