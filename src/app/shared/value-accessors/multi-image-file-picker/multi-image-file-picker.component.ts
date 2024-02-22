@@ -1,5 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, forwardRef } from '@angular/core';
+import {
+  Component,
+  Input,
+  forwardRef,
+  Output,
+  EventEmitter,
+} from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { ZorroModule } from '../../modules/zorro/zorro.module';
 
@@ -20,8 +26,10 @@ import { ZorroModule } from '../../modules/zorro/zorro.module';
 export class MultiImageFilePickerComponent implements ControlValueAccessor {
   @Input() acceptableFileTypes: string | string[] = 'image/jpeg, image/png';
 
+  @Output() removeImage = new EventEmitter<string>();
+
   images: string[] = [];
-  
+
   onChange: any = () => {};
   onTouched: any = () => {};
 
@@ -31,6 +39,9 @@ export class MultiImageFilePickerComponent implements ControlValueAccessor {
 
   set value(val: any) {
     this._value = val;
+
+    this.images = Array.isArray(val) ? [...val] : [];
+
     this.onChange(val);
     this.onTouched();
   }
@@ -38,7 +49,15 @@ export class MultiImageFilePickerComponent implements ControlValueAccessor {
   private _value: any = '';
 
   deleteImage(image: string) {
-    this.images = this.images.filter(item => item !== image);
+    this.images = this.images.filter(item => {
+      const shouldKeep = item !== image;
+
+      if (!shouldKeep) {
+        this.removeImage.emit(item);
+      }
+
+      return shouldKeep;
+    });
 
     this.onChange(this.images)
   }
@@ -46,6 +65,8 @@ export class MultiImageFilePickerComponent implements ControlValueAccessor {
   onFilesSelected(event: Event, fileElement: HTMLInputElement) {
     const element = event.currentTarget as HTMLInputElement;
     let files: FileList | null = element.files;
+
+    console.log(this.images)
 
     if (files?.length) {
       for (let i = 0; i < files.length; i++) {
@@ -62,7 +83,7 @@ export class MultiImageFilePickerComponent implements ControlValueAccessor {
     }
 
     fileElement.value = null
-    
+
   }
 
   writeValue(value: any): void {

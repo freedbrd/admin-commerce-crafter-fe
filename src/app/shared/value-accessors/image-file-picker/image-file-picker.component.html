@@ -1,24 +1,22 @@
-@if(!multiple) {
-    <div class="single-file-container">
-        <div [class.loaded]="image" class="file-box" (click)="file.click()">
-            @if(image) {
-                <img [src]="image" alt="">
-    
-                <div class="hover-overlay">
-                    Click or drag file to change the image
-                </div>
-            } @else {
-                <span nz-icon nzType="plus" nzTheme="outline"></span>
-                <p>Click or drag file to upload</p>
-            }
-        
-            <input [accept]="acceptableFileTypes" (change)="onFilesSelected($event)" #file type="file" hidden>
-        </div>
-    
-        @if(image) {
-            <div class="actions">
-                <button (click)="deleteImage()" type="button" nz-button nzType="primary">Delete</button>
-            </div>
-        }
+<div class="single-file-container">
+  <div [class.loaded]="image" class="file-box" (click)="file.click()">
+    @if(image) {
+      <img [src]="image" alt="">
+
+      <div class="hover-overlay">
+        Click or drag file to change the image
+      </div>
+    } @else {
+      <span nz-icon nzType="plus" nzTheme="outline"></span>
+      <p>Click or drag file to upload</p>
+    }
+
+    <input [accept]="acceptableFileTypes" (change)="onFilesSelected($event)" #file type="file" hidden>
+  </div>
+
+  @if(image) {
+    <div class="actions">
+      <button (click)="deleteImage()" type="button" nz-button nzType="primary">Delete</button>
     </div>
-}
+  }
+</div>

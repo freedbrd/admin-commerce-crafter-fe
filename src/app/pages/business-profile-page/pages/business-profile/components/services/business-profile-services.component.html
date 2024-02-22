@@ -4,7 +4,6 @@
       <div class="action">
         <button nz-button
                 [routerLink]="['service', 'new']"
-                (click)="create()"
                 nzType="primary">Create
         </button>
       </div>
@@ -21,7 +20,7 @@
             </thead>
             <tbody>
                 @for (data of table.data; track data.id) {
-                  <tr>
+                  <tr [routerLink]="['service', data?.id]">
                     <td>{{ data.name }}</td>
                     <td>{{ data.price }}</td>
                     <td>{{ data.active ? 'Active' : 'Inactive' }}</td>
@@ -38,7 +37,7 @@
                         <ul style="width: 150px"
                             nz-menu>
                           <li nz-menu-item
-                              >Edit
+                              [routerLink]="['service', data?.id]">Edit
                           </li>
                           <li (click)="delete(data)" nz-menu-item>Delete
                           </li>

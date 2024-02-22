@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { SupabaseService } from './supabase.service';
 import { IProfileService } from '../interfaces/business-profile.interface';
-import { switchMap } from 'rxjs';
-import { environment } from '../../../environments/environment';
+import { of, switchMap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -23,28 +22,62 @@ export class ServiceProfileService {
         [savedProfileService] = profileService || [];
         folderPath = `${userId}/${savedProfileService.business_profile_id}/${savedProfileService.id}`;
 
-        return this.uploadMainImage(
+        return mainImage ? this.uploadMainImage(
           folderPath,
           mainImage
-        )
+        ) : of(null)
       }),
       switchMap((mainImageList) => {
         const [mainImageResult] = mainImageList || [];
-        mainImagePath = mainImageResult.fileUrl
-        return this.uploadMultipleImages(folderPath, showCaseImages)
+        mainImagePath = mainImageResult?.fileUrl
+        return showCaseImages?.length ? this.uploadMultipleImages(folderPath, showCaseImages) : of(null)
       }),
       switchMap(images => {
-        const imagesUrl = images.map(item => item?.fileUrl)
+        const imagesUrl = images?.map(item => item?.fileUrl)
+
+        if(!mainImagePath && !imagesUrl) {
+          return of(null)
+        }
+
 
         const updatedProfileService: IProfileService = {
-          main_image: mainImagePath,
-          showcase_images: imagesUrl,
+          main_image: mainImagePath || '',
+          showcase_images: imagesUrl || [],
           id: savedProfileService.id
         } as IProfileService;
 
         return this.updateService(updatedProfileService)
       })
     )
+  }
+
+  editService(profileService: IProfileService, mainImage: Blob, showCaseImages: Blob[], userId: string) {
+    let folderPath = `${userId}/${profileService.business_profile_id}/${profileService.id}`;
+    let mainImagePath = '';
+
+    return (mainImage ? this.uploadMainImage(folderPath, mainImage) : of(null)).pipe(
+      switchMap((mainImageList) => {
+        const [mainImageResult] = mainImageList || [];
+        mainImagePath = mainImageResult?.fileUrl
+        return showCaseImages?.length ? this.uploadMultipleImages(folderPath, showCaseImages) : of(null)
+      }),
+      switchMap((images) => {
+        const imagesUrl = images?.map(item => item?.fileUrl)
+
+        const updatedProfileService: IProfileService = {
+          ...profileService,
+          main_image: mainImagePath || profileService?.main_image,
+          showcase_images: imagesUrl || profileService?.showcase_images || [],
+          id: profileService.id
+        } as IProfileService;
+
+        return this.updateService(updatedProfileService)
+      })
+    )
+  }
+
+  getProfileServiceById(serviceId: string) {
+    return this.supabaseService.selectById<IProfileService>('services', serviceId)
   }
 
   updateService(profileService: IProfileService) {
@@ -57,5 +90,9 @@ export class ServiceProfileService {
 
   uploadMultipleImages(filePath: string, blobFiles: Blob[]) {
     return this.supabaseService.uploadImages(filePath, '', blobFiles, 'assets/')
+  }
+
+  removeImages(imageUrls: string[]) {
+    return this.supabaseService.removeImages(`assets`, imageUrls)
   }
 }

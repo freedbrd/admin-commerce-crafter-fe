@@ -1,5 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, forwardRef } from '@angular/core';
+import {
+  Component,
+  Input,
+  forwardRef,
+  Output,
+  EventEmitter,
+} from '@angular/core';
 import { ZorroModule } from '../../modules/zorro/zorro.module';
 import { ControlValueAccessor, FormControl, NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
@@ -19,12 +25,14 @@ import { NzNotificationService } from 'ng-zorro-antd/notification';
   ]
 })
 export class ImageFilePickerComponent implements ControlValueAccessor {
-  @Input() multiple = false;
   @Input() acceptableFileTypes: string | string[] = 'image/jpeg, image/png';
+
+  @Output() removeImage = new EventEmitter<string>();
 
   image: string = '';
 
   onChange: any = () => { };
+
   onTouched: any = () => { };
 
   get value(): any {
@@ -33,6 +41,7 @@ export class ImageFilePickerComponent implements ControlValueAccessor {
 
   set value(val: any) {
     this._value = val;
+    this.image = val;
     this.onChange(val);
     this.onTouched();
   }
@@ -46,17 +55,18 @@ export class ImageFilePickerComponent implements ControlValueAccessor {
     const [firstFile] = Array.from(files);
 
       const reader = new FileReader();
-      
+
       reader.onload = (e: any) => {
         this.image = e?.target?.result || '';
         this.onChange(this.image)
       }
 
       reader.readAsDataURL(firstFile);
-    
+
   }
 
   deleteImage() {
+    this.removeImage.emit(this.image)
     this.image = '';
     this.onChange(this.image)
   }

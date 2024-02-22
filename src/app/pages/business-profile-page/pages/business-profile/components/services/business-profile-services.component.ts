@@ -25,8 +25,6 @@ export class BusinessProfileServicesComponent {
     this.profileServicesSelector$ = this.store.select(profileServicesSelector)
   }
 
-  create() {}
-
   delete(profileServices: IProfileService) {
     this.store.dispatch(deleteServiceRequest({
       profileServices

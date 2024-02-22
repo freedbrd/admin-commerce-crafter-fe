@@ -141,6 +141,21 @@ export class SupabaseService {
     );
   }
 
+  removeImages(bucket: string, imageUrls: string[]) {
+    return from(this.supabase.storage.from(bucket).remove(imageUrls)).pipe(
+      map(({error, data}) => {
+        if(error) {
+          throw error;
+        }
+
+        return data;
+      }),
+      catchError((err) => {
+        return throwError(() => err)
+      })
+    )
+  }
+
   uploadImages(filePath: string, fileName: string, files: File[] | Blob[], folder = '') {
     const uploadObservables = files.map((file, index) => {
       const fileName = `${Date.now()}-${index}`;

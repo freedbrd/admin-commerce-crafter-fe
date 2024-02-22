@@ -9,3 +9,8 @@ export const profileServicesSelector = createSelector(
     profileServieState,
     selectAll
 )
+
+export const currentProfileServiceSelector = createSelector(
+  profileServieState,
+  (state) => state.currentBusinessProfileService
+)

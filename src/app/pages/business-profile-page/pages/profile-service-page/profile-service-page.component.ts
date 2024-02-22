@@ -1,5 +1,5 @@
 import { ActivatedRoute } from '@angular/router';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ZorroModule } from '../../../../shared/modules/zorro/zorro.module';
 import {
@@ -23,10 +23,22 @@ import {
   selectProfile,
   selectUserId,
 } from '../../../../shared/ngrx/auth/auth.selectors';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, filter, Observable, of, switchMap, take } from 'rxjs';
 import {
   IProfileService
 } from '../../../../shared/interfaces/business-profile.interface';
+import {
+  clearSelectedService, createServiceRequest, editServiceRequest,
+  getServiceByIdRequest,
+} from '../../../../shared/ngrx/business-profile-services/profile-services.actions';
+import {
+  currentProfileServiceSelector
+} from '../../../../shared/ngrx/business-profile-services/profile-services.selector';
+import {
+  extractSupabaseFolders,
+  isSupabaseImageUrl,
+} from '../../../../shared/helpers/is-supabase-image-url.helper';
+import { main } from '@angular/compiler-cli/src/main';
 
 @Component({
   selector: 'app-profile-service-page',
@@ -41,11 +53,15 @@ import {
   templateUrl: './profile-service-page.component.html',
   styleUrl: './profile-service-page.component.scss',
 })
-export class ProfileServicePageComponent implements OnInit {
-  isLoading = false;
-  private userId$ = new BehaviorSubject<string | null>(null);
-
+export class ProfileServicePageComponent implements OnInit, OnDestroy {
   form: FormGroup;
+  isLoading = false;
+
+  private userId$ = new BehaviorSubject<string | null>(null);
+  private currentProfileService$: Observable<IProfileService>;
+
+  private currentProfileService: IProfileService;
+  private imagesToRemoveUrls: string[] = []
 
   mockArray = [
     {label: 'Test1', value: '123'},
@@ -59,11 +75,19 @@ export class ProfileServicePageComponent implements OnInit {
     private store: Store
   ) {
     this.store.pipe(select(selectUserId)).subscribe(this.userId$);
+
+    this.currentProfileService$ = this.store.select(currentProfileServiceSelector)
   }
 
   ngOnInit(): void {
     this.initForm();
     this.getCurrentService();
+
+    this.patchForm()
+  }
+
+  ngOnDestroy() {
+    this.store.dispatch(clearSelectedService())
   }
 
   onSubmit() {
@@ -71,28 +95,53 @@ export class ProfileServicePageComponent implements OnInit {
 
     const newProfileService = this.form.getRawValue() as IProfileService;
     const mainImageBlob = base64ToBlobHelper(newProfileService.main_image);
-    const showChaseImages = newProfileService.showcase_images.map(item => base64ToBlobHelper(item))
+    const showChaseImagesBlob = newProfileService.showcase_images.map(item => base64ToBlobHelper(item)).filter(item => item) || []
 
-    this.serviceProfileService.createService(
-      {...newProfileService, main_image: '', showcase_images: [], business_profile_id: businessId},
-      mainImageBlob,
-      showChaseImages,
-      this.userId$.value
-    ).subscribe(res => {
-      console.log(res);
-    })
+    if(this.currentProfileService) {
+      this.store.dispatch(editServiceRequest({
+        profileServices: {
+            ...this.currentProfileService,
+            ...this.form.getRawValue()
+          },
+        mainImage: mainImageBlob,
+        showCasesImages: showChaseImagesBlob,
+        imagesToDelete: this.imagesToRemoveUrls
+      }));
+
+      return;
+    }
+
+    this.store.dispatch(createServiceRequest({
+      profileServices: {...newProfileService, main_image: '', showcase_images: [], business_profile_id: businessId, user_id: this.userId$.value},
+      mainImage: mainImageBlob || null,
+      showCasesImages: showChaseImagesBlob
+    }))
+
+    // this.serviceProfileService.createService(
+    //   {...newProfileService, main_image: '', showcase_images: [], business_profile_id: businessId},
+    //   mainImageBlob || null,
+    //   showChaseImagesBlob,
+    //   this.userId$.value
+    // ).subscribe(res => {
+    //   console.log(res);
+    // })
+  }
+
+  handleRemoveImageUrl(url: string) {
+    if (isSupabaseImageUrl(url)) {
+
+      this.imagesToRemoveUrls.push(extractSupabaseFolders(url));
+    }
   }
 
   private getCurrentService() {
     const {serviceId} = this.activatedRoute.snapshot.params;
 
     if (serviceId === 'new' || !serviceId) {
-      console.log('new');
-
       return;
     }
 
-    console.log('get service');
+    this.store.dispatch(getServiceByIdRequest({id: serviceId}))
   }
 
   private initForm() {
@@ -105,6 +154,16 @@ export class ProfileServicePageComponent implements OnInit {
       business_profile_id: [''],
       service_resource_ids: [],
     });
+  }
+
+  private patchForm() {
+    this.currentProfileService$.pipe(
+      filter(item => !!item),
+      take(1)
+    ).subscribe(profileService => {
+      this.currentProfileService = profileService
+      this.form.patchValue(profileService)
+    })
   }
 
 }
