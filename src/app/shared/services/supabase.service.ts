@@ -11,10 +11,11 @@ import {
   map,
   mergeMap,
   of,
-  switchMap,
+  switchMap, tap,
   throwError,
 } from 'rxjs';
 import { ISignupUser } from '../interfaces/profile.interface';
+import { FileObject } from '@supabase/storage-js/src/lib/types';
 
 @Injectable({
   providedIn: 'root',
@@ -152,6 +153,34 @@ export class SupabaseService {
       }),
       catchError((err) => {
         return throwError(() => err)
+      })
+    )
+  }
+
+  getListOfFiles(bucket: string, path: string) {
+    return from(this.supabase.storage.from(bucket).list(path)).pipe(
+      map(({error, data}) => {
+        if(error) {
+          throw error;
+        }
+
+        return data;
+      }),
+      catchError((err) => {
+        return throwError(() => err)
+      })
+    )
+  }
+
+  clearFolder(bucket: string, path: string) {
+    return this.getListOfFiles(bucket, path).pipe(
+      tap(console.log),
+      switchMap((res: FileObject[]) => {
+        const fileList = res.map(fileObject => {
+          return `${path}/${fileObject.name}`
+        })
+
+        return this.removeImages(bucket, fileList)
       })
     )
   }

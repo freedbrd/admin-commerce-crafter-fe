@@ -31,6 +31,7 @@ import {
 import { ServiceProfileService } from '../../services/service-profile.service';
 import { Router } from '@angular/router';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
+import { SupabaseService } from '../../services/supabase.service';
 
 @Injectable()
 export class ProfileServiceEffects {
@@ -39,6 +40,9 @@ export class ProfileServiceEffects {
     switchMap(
       ({profileServices}) => this.businessActivityService.deleteBusinessActivity(
         profileServices?.id).pipe(
+        switchMap(() => {
+          return this.supabaseService.clearFolder('assets', `${profileServices?.user_id}/${profileServices?.business_profile_id}/${profileServices?.id}`)
+        }),
         map(() => deleteServiceSuccess({profileServices})),
       )),
   ));
@@ -121,7 +125,8 @@ export class ProfileServiceEffects {
     private serviceProfileService: ServiceProfileService,
     private store: Store,
     private router: Router,
-    private nzNotificationServices: NzNotificationService
+    private nzNotificationServices: NzNotificationService,
+    private supabaseService: SupabaseService
   ) {
   }
 }

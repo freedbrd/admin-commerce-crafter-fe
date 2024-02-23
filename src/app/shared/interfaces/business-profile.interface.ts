@@ -5,7 +5,8 @@ export interface IBusinessProfile {
   active: boolean;
   currency: string;
   services: IProfileService[];
-  serviceResources: IServiceResource[]
+  serviceResources: IServiceResource[],
+  user_id: string;
 }
 
 export interface IProfileService {

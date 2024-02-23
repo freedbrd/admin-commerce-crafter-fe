@@ -8,6 +8,9 @@ import { businessProfileServices } from '../../../../../../shared/ngrx/business-
 import { deleteServiceRequest } from '../../../../../../shared/ngrx/business-profile-services/profile-services.actions';
 import { profileServicesSelector } from '../../../../../../shared/ngrx/business-profile-services/profile-services.selector';
 import { RouterModule } from '@angular/router';
+import {
+  SupabaseService
+} from '../../../../../../shared/services/supabase.service';
 
 @Component({
   selector: 'app-business-profile-services',
@@ -20,7 +23,8 @@ export class BusinessProfileServicesComponent {
   profileServicesSelector$: Observable<IProfileService[]>
 
   constructor(
-    private store: Store
+    private store: Store,
+    private supabase: SupabaseService
   ) {
     this.profileServicesSelector$ = this.store.select(profileServicesSelector)
   }

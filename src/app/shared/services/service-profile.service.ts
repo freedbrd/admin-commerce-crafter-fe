@@ -2,6 +2,9 @@ import { Injectable } from '@angular/core';
 import { SupabaseService } from './supabase.service';
 import { IProfileService } from '../interfaces/business-profile.interface';
 import { of, switchMap } from 'rxjs';
+import {
+  extractSupabaseFolders
+} from '../helpers/is-supabase-image-url.helper';
 
 @Injectable({
   providedIn: 'root'
@@ -62,12 +65,16 @@ export class ServiceProfileService {
         return showCaseImages?.length ? this.uploadMultipleImages(folderPath, showCaseImages) : of(null)
       }),
       switchMap((images) => {
-        const imagesUrl = images?.map(item => item?.fileUrl)
+        const imagesUrl = images?.map(item => item?.fileUrl) || [];
+        const showcaseImageSupabaseUrls = profileService?.showcase_images?.filter(item => !!extractSupabaseFolders(item))
+        const showcaseImages = showcaseImageSupabaseUrls?.length
+          ? [...showcaseImageSupabaseUrls, ...imagesUrl]
+          : imagesUrl
 
         const updatedProfileService: IProfileService = {
           ...profileService,
           main_image: mainImagePath || profileService?.main_image,
-          showcase_images: imagesUrl || profileService?.showcase_images || [],
+          showcase_images: showcaseImages,
           id: profileService.id
         } as IProfileService;
 

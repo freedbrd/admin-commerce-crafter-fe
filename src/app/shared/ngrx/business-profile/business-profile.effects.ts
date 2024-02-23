@@ -20,6 +20,7 @@ import { catchError, map, switchMap, throwError } from 'rxjs';
 import { IBusinessProfile } from '../../interfaces/business-profile.interface';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
 import { PostgrestError } from '@supabase/supabase-js';
+import { SupabaseService } from '../../services/supabase.service';
 
 @Injectable()
 export class BusinessProfileEffects {
@@ -50,6 +51,9 @@ export class BusinessProfileEffects {
   deleteBusinessProfileRequest$ = createEffect(() => this.actions$.pipe(
     ofType(deleteBusinessProfileRequest),
     switchMap(({businessProfile}) => this.businessProfileService.deleteBusinessProfile(businessProfile).pipe(
+      switchMap(() => {
+        return this.supabaseService.clearFolder('assets', `${businessProfile?.user_id}/${businessProfile.id}`)
+      }),
       map(() => {
         this.nzNotificationService.success('Success', 'Business profile was removed')
         return deleteBusinessProfileSuccess({businessProfile})
@@ -92,7 +96,8 @@ export class BusinessProfileEffects {
   constructor(
     private businessProfileService: BusinessProfileService,
     private actions$: Actions,
-    private nzNotificationService: NzNotificationService
+    private nzNotificationService: NzNotificationService,
+    private supabaseService: SupabaseService
   ) {
   }
 }
