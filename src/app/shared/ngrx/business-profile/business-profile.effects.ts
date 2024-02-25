@@ -21,6 +21,9 @@ import { IBusinessProfile } from '../../interfaces/business-profile.interface';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
 import { PostgrestError } from '@supabase/supabase-js';
 import { SupabaseService } from '../../services/supabase.service';
+import {
+  setProfileResourceList
+} from '../business-profile-resources/profile-resource.actions';
 
 @Injectable()
 export class BusinessProfileEffects {
@@ -91,6 +94,11 @@ export class BusinessProfileEffects {
   setProfileServices$ = createEffect(() => this.actions$.pipe(
     ofType(setBusinessProfileById),
     map(({businessProfile}) => setProfileServices({profileServices: businessProfile?.services || []}))
+  ))
+
+  setProfileResources$ = createEffect(() => this.actions$.pipe(
+    ofType(setBusinessProfileById),
+    map(({businessProfile}) => setProfileResourceList({profileResources: businessProfile?.resources || []}))
   ))
 
   constructor(

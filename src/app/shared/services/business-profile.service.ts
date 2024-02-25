@@ -23,7 +23,7 @@ export class BusinessProfileService {
   }
 
   getBusinessProfileById(id: string) {
-    return this.supabaseService.selectById<IBusinessProfile>(this.tableName, id, 'id', 'services(*)')
+    return this.supabaseService.selectById<IBusinessProfile>(this.tableName, id, 'id', 'services(*), resources(*)')
   }
 
   updateBusinessProfile(data: IBusinessProfile) {

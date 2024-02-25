@@ -49,11 +49,22 @@ export class TransferItemComponent implements ControlValueAccessor {
         event.currentIndex,
       );
     }
+
+    this.onChange(this.selectedItems.map(item => item?.value))
   }
 
-  writeValue(value: any): void {
+  writeValue(value: string[]): void {
     if (value !== undefined) {
       this.value = value;
+
+      const intersectedValues = this.availableItems.filter(item => value?.some(id => item.value === id)) || [];
+
+      this.selectedItems.push(...intersectedValues);
+
+      // remove intersected from here
+      this.availableItems = this.availableItems?.filter(item =>
+        !value?.includes(item.value)
+      );
     }
   }
 
