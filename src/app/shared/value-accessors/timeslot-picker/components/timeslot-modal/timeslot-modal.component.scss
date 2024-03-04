@@ -1,0 +1,62 @@
+nz-select {
+  width: 90px;
+}
+
+.time-wrapper {
+  .time-row {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+
+    .time-dash, .remove-icon {
+      position: relative;
+      width: 20px;
+
+      span {
+        position: absolute;
+        bottom: 13px;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+    }
+
+    .remove-icon {
+      margin-left: 40px;
+      span {
+        cursor: pointer;
+        font-size: 18px;
+      }
+    }
+
+    .time-item {
+      nz-form-label {
+        text-align: right;
+      }
+
+      nz-form-item {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 0;
+      }
+    }
+  }
+}
+
+.add-more {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  margin-top: 20px;
+
+  span {
+    font-size: 24px;
+  }
+}
+
+.actions {
+  margin-top: 20px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 15px;
+}

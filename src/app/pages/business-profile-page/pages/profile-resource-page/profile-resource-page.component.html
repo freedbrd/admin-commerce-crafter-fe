@@ -1,0 +1,39 @@
+<form nz-row
+      (ngSubmit)="onSubmit()"
+      [nzGutter]="[15, 15]"
+      [formGroup]="form">
+  <div nz-col
+       nzSpan="24">
+    <h2>Profile Resource: New</h2>
+  </div>
+  <div nz-col
+       nzSpan="24">
+    <nz-form-item>
+      <nz-form-label nzSpan="24">Name</nz-form-label>
+      <nz-form-control nzSpan="24">
+        <input type="text" nz-input formControlName="name">
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label nzSpan="24">Role</nz-form-label>
+      <nz-form-control nzSpan="24">
+        <input type="text" nz-input formControlName="resource_type">
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label nzSpan="24">Description</nz-form-label>
+      <nz-form-control nzSpan="24">
+        <textarea nz-input formControlName="description"></textarea>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label nzSpan="24">Calendar</nz-form-label>
+      <nz-form-control nzSpan="24">
+        <app-timeslot-picker formControlName="schedule"></app-timeslot-picker>
+      </nz-form-control>
+    </nz-form-item>
+  </div>
+  <div nz-col nzSpan="24">
+    <button nz-button type="submit" nzType="primary">Save</button>
+  </div>
+</form>

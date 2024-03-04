@@ -14,4 +14,8 @@ export const businessProfileRoutes: Routes = [
     path: ':businessId/service/:serviceId',
     loadComponent: () => import('../business-profile-page/pages/profile-service-page/profile-service-page.component').then(c => c.ProfileServicePageComponent)
   },
+  {
+    path: ':businessId/resource/:resourceId',
+    loadComponent: () => import('../business-profile-page/pages/profile-resource-page/profile-resource-page.component').then(c => c.ProfileResourcePageComponent)
+  },
 ]

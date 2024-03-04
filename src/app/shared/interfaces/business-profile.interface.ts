@@ -5,7 +5,6 @@ export interface IBusinessProfile {
   active: boolean;
   currency: string;
   services: IProfileService[];
-  serviceResources: IServiceResource[],
   resources: IProfileResource[]
   user_id: string;
 }
@@ -21,29 +20,6 @@ export interface IProfileService {
   business_profile_id: string;
   user_id: string;
   service_resource_ids: string[]
-}
-
-export interface IServiceShowcaseImage {
-  id: string;
-  url: string;
-  description: string;
-}
-
-export interface IServiceResource {
-  id: string;
-  name: string;
-  type: string;
-  availability: IResourceAvailability[];
-  description: string;
-  image_url: string;
-  role: string;
-}
-
-export interface IResourceAvailability {
-  id: string;
-  date: string;
-  startTime: string;
-  endTime: string;
 }
 
 export enum BusinessProfileType {
@@ -66,7 +42,13 @@ export interface IProfileResource {
 }
 
 export interface IResourceSchedule {
-  date: string; // Or Date type, depending on how you want to handle dates
-  startTime: string; // Could also be a Date type or a string in 'HH:mm:ss' format
-  endTime: string; // Same as startTime
+  dayOfWeek: number; // Or Date type, depending on how you want to handle dates
+  timeslots: IResourceScheduleTimeslot[];
+  label: string;
+}
+
+export interface IResourceScheduleTimeslot {
+  startTime: string;
+  endTime: string;
+  id: string;
 }

@@ -19,7 +19,7 @@ import {
 import { NzModalService } from 'ng-zorro-antd/modal';
 import {
   BusinessProfileModalComponent,
-} from '../business-profile-modal/business-profile-modal.component';
+} from '../../components/business-profile-modal/business-profile-modal.component';
 import { Router } from '@angular/router';
 import { setProfileServices } from '../../../../shared/ngrx/business-profile-services/profile-services.actions';
 

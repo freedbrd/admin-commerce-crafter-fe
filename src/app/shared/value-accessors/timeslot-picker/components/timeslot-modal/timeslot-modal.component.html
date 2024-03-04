@@ -1,0 +1,43 @@
+<h2>Set timeslots for {{currentDay?.dayOfWeek}}</h2>
+
+<form (ngSubmit)="submit()" nz-form [formGroup]="form">
+  <div class="time-wrapper" formArrayName="timeslots">
+    @for(timeslotControl of timeslotFormArray?.controls; track timeslotControl?.value; let i = $index) {
+      <div class="time-row" [formGroupName]="i">
+        <div class="time-item">
+          <nz-form-item>
+            <nz-form-label>Start Time</nz-form-label>
+            <nz-select type="text" formControlName="startTime" nzPlaceHolder="Start Time">
+              @for(timeslot of TIMESLOTS; track timeslot) {
+                <nz-option [nzValue]="timeslot" [nzLabel]="timeslot"></nz-option>
+              }
+            </nz-select>
+          </nz-form-item>
+        </div>
+        <div class="time-dash">
+          <span nz-icon nzType="minus" nzTheme="outline"></span>
+        </div>
+        <div class="time-item">
+          <nz-form-item>
+            <nz-form-label>End Time</nz-form-label>
+            <nz-select type="text" formControlName="endTime" nzPlaceHolder="End Time">
+              @for(timeslot of TIMESLOTS; track timeslot) {
+                <nz-option [nzValue]="timeslot" [nzLabel]="timeslot"></nz-option>
+              }
+            </nz-select>
+          </nz-form-item>
+        </div>
+        <div class="time-item remove-icon" (click)="removeTimeslotItem(i)">
+          <span nz-icon nzType="delete" nzTheme="outline"></span>
+        </div>
+      </div>
+    }
+  </div>
+</form>
+<div class="add-more" (click)="addTimeslot()">
+  <span nz-icon nzType="plus" nzTheme="outline"></span>
+</div>
+<div class="actions">
+  <button nz-button nzType="primary" (click)="submit()">Save</button>
+  <button nz-button nzType="default" (click)="cancel()">Cancel</button>
+</div>

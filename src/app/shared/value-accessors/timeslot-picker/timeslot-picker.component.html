@@ -1,0 +1,41 @@
+<header>
+  @for (day of days; track day.label) {
+    <div [class.selected]="day?.timeslots?.length"
+         [class.current]="day.dayOfWeek === selectedDay.dayOfWeek"
+         (click)="selectedDay = day"
+         class="day">{{ day?.label }}
+    </div>
+  }
+</header>
+<main>
+
+
+  @for(day of days; track day.dayOfWeek){
+    @if(day.dayOfWeek === selectedDay.dayOfWeek) {
+      <div class="actions">
+        <span class="selected-day">
+          {{ selectedDay.label }}
+        </span>
+        <button nz-button
+                nzType="primary"
+                type="button"
+                (click)="openTimeslotModal(day)">Manage Timeslots
+        </button>
+      </div>
+      <nz-table #basicTable [nzData]="day.timeslots">
+        <thead>
+        <tr>
+          <th>Start Time</th>
+          <th>End Time</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let data of basicTable.data">
+          <td>{{data.startTime}}</td>
+          <td>{{data.endTime}}</td>
+        </tr>
+        </tbody>
+      </nz-table>
+    }
+  }
+</main>

@@ -13,3 +13,8 @@ export const profileResourcesSelector = createSelector(
   profileResourceFeatureSelector,
   selectAll,
 );
+
+export const currentResourceSelector = createSelector(
+  profileResourceFeatureSelector,
+  (state) => state.currentProfileResource
+)

@@ -25,6 +25,9 @@ import { profileServicesReducer } from './shared/ngrx/business-profile-services/
 import {
   profileResourceReducer
 } from './shared/ngrx/business-profile-resources/profile-resource.reducer';
+import {
+  ProfileResourceEffects
+} from './shared/ngrx/business-profile-resources/profile-resource.effects';
 
 registerLocaleData(en);
 
@@ -54,9 +57,10 @@ export const appConfig: ApplicationConfig = {
         reducer: profileResourceReducer
     }),
     provideEffects([
-        AuthEffects,
-        BusinessProfileEffects,
-        ProfileServiceEffects,
+      AuthEffects,
+      BusinessProfileEffects,
+      ProfileServiceEffects,
+      ProfileResourceEffects,
     ]),
     importProvidersFrom([
         StoreDevtoolsModule.instrument({

@@ -12,6 +12,9 @@ import {
   ZorroModule,
 } from '../../../../../../shared/modules/zorro/zorro.module';
 import { RouterModule } from '@angular/router';
+import {
+  removeProfileResourceRequest
+} from '../../../../../../shared/ngrx/business-profile-resources/profile-resource.actions';
 
 @Component({
   selector: 'app-business-profile-resources',
@@ -34,6 +37,6 @@ export class BusinessProfileResourcesComponent {
   }
 
   delete(data: IProfileResource) {
-
+    this.store.dispatch(removeProfileResourceRequest({id: data.id}))
   }
 }
