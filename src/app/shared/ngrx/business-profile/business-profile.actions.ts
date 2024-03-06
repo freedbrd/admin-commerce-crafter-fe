@@ -12,7 +12,7 @@ export enum BusinessProfileActionTypes {
   DELETE_BUSINESS_PROFILE_SUCCESS = '[Business Profiles] Delete Success business profiles',
   EDIT_BUSINESS_PROFILE_REQUEST = '[Business Profiles] EDIT REQUEST business profiles',
   EDIT_BUSINESS_PROFILE_SUCCESS = '[Business Profiles] EDIT SUCCESS business profiles',
-  DELETE_PROFILE_SERVICE_SUCCESS = '[Business Profiles] Delete SUCCESS business profiles service',
+  PUBLISH_BUSINESS_PROFILE = '[Business Profiles] Publish Business Profile',
 }
 
 export const getBusinessProfilesRequest = createAction(
@@ -61,5 +61,10 @@ export const editBusinessProfileRequest = createAction(
 
 export const editBusinessProfileSuccess = createAction(
   BusinessProfileActionTypes.EDIT_BUSINESS_PROFILE_SUCCESS,
+  props<{businessProfile: IBusinessProfile}>()
+)
+
+export const publishBusinessProfileRequest = createAction(
+  BusinessProfileActionTypes.PUBLISH_BUSINESS_PROFILE,
   props<{businessProfile: IBusinessProfile}>()
 )

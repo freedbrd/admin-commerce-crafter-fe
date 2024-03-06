@@ -88,8 +88,8 @@ export class SupabaseService {
       );
   }
 
-  select<T>(table: string) {
-    return from(this.supabase.from(table).select('*')).pipe(
+  select<T>(table: string, joinString = '') {
+    return from(this.supabase.from(table).select(`* ${joinString ? ', ' + joinString : ''}`)).pipe(
       switchMap(res => {
         return res.error ? throwError(() => res.error) : of(res);
       }),

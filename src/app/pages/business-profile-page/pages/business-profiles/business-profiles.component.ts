@@ -13,7 +13,7 @@ import {
   createBusinessProfile,
   deleteBusinessProfileRequest,
   editBusinessProfileRequest,
-  getBusinessProfilesRequest,
+  getBusinessProfilesRequest, publishBusinessProfileRequest,
   setBusinessProfileById,
 } from '../../../../shared/ngrx/business-profile/business-profile.actions';
 import { NzModalService } from 'ng-zorro-antd/modal';
@@ -22,6 +22,7 @@ import {
 } from '../../components/business-profile-modal/business-profile-modal.component';
 import { Router } from '@angular/router';
 import { setProfileServices } from '../../../../shared/ngrx/business-profile-services/profile-services.actions';
+import { UrlPipe } from '../../../../shared/pipes/url.pipe';
 
 @Component({
   selector: 'app-business-profiles',
@@ -29,6 +30,7 @@ import { setProfileServices } from '../../../../shared/ngrx/business-profile-ser
   imports: [
     CommonModule,
     ZorroModule,
+    UrlPipe,
   ],
   templateUrl: './business-profiles.component.html',
   styleUrl: './business-profiles.component.scss'
@@ -66,6 +68,10 @@ export class BusinessProfilesComponent implements OnInit {
         businessProfile
       }))
     })
+  }
+
+  publish(businessProfile: IBusinessProfile) {
+    this.store.dispatch(publishBusinessProfileRequest({businessProfile}))
   }
 
   edit(businessProfile: IBusinessProfile) {

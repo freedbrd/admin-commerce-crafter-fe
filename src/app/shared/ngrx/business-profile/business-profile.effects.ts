@@ -11,7 +11,7 @@ import {
   editBusinessProfileRequest,
   editBusinessProfileSuccess,
   getBusinessProfileById,
-  getBusinessProfilesRequest,
+  getBusinessProfilesRequest, publishBusinessProfileRequest,
   setBusinessProfileById,
   setBusinessProfiles,
 } from './business-profile.actions';
@@ -100,6 +100,25 @@ export class BusinessProfileEffects {
     ofType(setBusinessProfileById),
     map(({businessProfile}) => setProfileResourceList({profileResources: businessProfile?.resources || []}))
   ))
+
+  publishBusinessProfileRequest$ = createEffect(() => this.actions$.pipe(
+    ofType(publishBusinessProfileRequest),
+    switchMap(
+      ({businessProfile}) => {
+        return this.businessProfileService.publishBusinessProfile(
+          businessProfile).pipe(
+          map((value) => {
+            return editBusinessProfileSuccess({businessProfile: value})
+          }),
+          catchError((err) => {
+            this.nzNotificationService.error('Error', err?.error?.error)
+            return throwError(() => err)
+          }),
+        );
+      }),
+  ));
+
+
 
   constructor(
     private businessProfileService: BusinessProfileService,

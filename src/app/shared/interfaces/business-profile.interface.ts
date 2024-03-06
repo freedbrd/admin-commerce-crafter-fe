@@ -7,6 +7,11 @@ export interface IBusinessProfile {
   services: IProfileService[];
   resources: IProfileResource[]
   user_id: string;
+  subscriptions: IBusinessProfileSubscription;
+}
+
+export interface IBusinessProfileSubscription {
+  url: string
 }
 
 export interface IProfileService {

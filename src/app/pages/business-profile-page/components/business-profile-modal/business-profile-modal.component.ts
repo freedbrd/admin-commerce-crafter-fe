@@ -57,6 +57,7 @@ export class BusinessProfileModalComponent implements OnInit {
       name: [this.businessProfile?.name ?? '', [Validators.required]],
       type: this.businessProfile?.type ?? 'service',
       currency: this.businessProfile?.currency ?? '',
+      active: false,
     });
   }
 }

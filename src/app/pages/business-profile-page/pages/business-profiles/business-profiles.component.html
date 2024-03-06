@@ -20,6 +20,7 @@
         <th nzWidth="150px">Status</th>
         <th nzWidth="150px">Type</th>
         <th nzWidth="50px">Currency</th>
+        <th nzWidth="150px">URL</th>
         <th nzWidth="80px"></th>
       </tr>
       </thead>
@@ -30,6 +31,10 @@
             <td>{{ data.active ? 'Active' : 'Inactive' }}</td>
             <td>{{ data.type }}</td>
             <td>{{ data.currency || '-' }}</td>
+            <td (click)="$event.stopPropagation()">
+              <a target="_blank"
+                 [href]="data?.subscriptions?.url | url">{{ data?.subscriptions?.url || '-' }}</a>
+            </td>
             <td (click)="$event.stopPropagation()">
               <span style="display: block; width: 100%; height: 100%;font-size: 25px;"
                     nz-icon
@@ -42,6 +47,10 @@
               <nz-dropdown-menu #menu="nzDropdownMenu">
                 <ul style="width: 150px"
                     nz-menu>
+                  <li nz-menu-item
+                      *ngIf="!data?.active && !data?.subscriptions?.url"
+                      (click)="publish(data)">Publish
+                  </li>
                   <li nz-menu-item
                       (click)="edit(data)">Edit
                   </li>
