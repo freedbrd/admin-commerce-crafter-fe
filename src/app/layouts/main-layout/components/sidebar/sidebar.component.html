@@ -1,3 +1,12 @@
 <div class="app-brand">
   <span>CommerceCrafter</span>
 </div>
+
+<ul nz-menu
+    [nzMode]="'vertical'">
+  <li nz-menu-item
+      [routerLinkActive]="'ant-menu-item-selected'"
+      [nzMatchRouterExact]="true"
+      [routerLink]="['business-profiles']">Business Profiles
+  </li>
+</ul>
