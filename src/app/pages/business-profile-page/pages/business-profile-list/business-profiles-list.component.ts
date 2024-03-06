@@ -1,41 +1,41 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ZorroModule } from '../../../../shared/modules/zorro/zorro.module';
+import { ZorroModule } from '@shared/modules/zorro/zorro.module';
 import {
   IBusinessProfile,
-} from '../../../../shared/interfaces/business-profile.interface';
+} from '@shared/interfaces/business-profile.interface';
 import { Store } from '@ngrx/store';
 import { Observable, take } from 'rxjs';
 import {
   businessProfileSelector,
-} from '../../../../shared/ngrx/business-profile/business-profile.selectors';
+} from '@shared/ngrx/business-profile/business-profile.selectors';
 import {
   createBusinessProfile,
   deleteBusinessProfileRequest,
   editBusinessProfileRequest,
   getBusinessProfilesRequest, publishBusinessProfileRequest,
   setBusinessProfileById,
-} from '../../../../shared/ngrx/business-profile/business-profile.actions';
+} from '@shared/ngrx/business-profile/business-profile.actions';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import {
   BusinessProfileModalComponent,
 } from '../../components/business-profile-modal/business-profile-modal.component';
 import { Router } from '@angular/router';
-import { setProfileServices } from '../../../../shared/ngrx/business-profile-services/profile-services.actions';
-import { UrlPipe } from '../../../../shared/pipes/url.pipe';
+import { setProfileServices } from '@shared/ngrx/business-profile-services/profile-services.actions';
+import { UrlPipe } from '@shared/pipes/url.pipe';
 
 @Component({
-  selector: 'app-business-profiles',
+  selector: 'app-business-profile-list',
   standalone: true,
   imports: [
     CommonModule,
     ZorroModule,
     UrlPipe,
   ],
-  templateUrl: './business-profiles.component.html',
-  styleUrl: './business-profiles.component.scss'
+  templateUrl: './business-profiles-list.component.html',
+  styleUrl: './business-profiles-list.component.scss'
 })
-export class BusinessProfilesComponent implements OnInit {
+export class BusinessProfilesListComponent implements OnInit {
   businessProfiles$: Observable<IBusinessProfile[] | null>
 
   constructor(

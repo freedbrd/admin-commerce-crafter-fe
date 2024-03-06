@@ -17,17 +17,17 @@ import {
 } from '../../../../../../shared/ngrx/business-profile-resources/profile-resource.actions';
 
 @Component({
-  selector: 'app-business-profile-resources',
+  selector: 'app-profile-resources',
   standalone: true,
   imports: [
     CommonModule,
     ZorroModule,
     RouterModule,
   ],
-  templateUrl: './business-profile-resources.component.html',
-  styleUrl: './business-profile-resources.component.scss',
+  templateUrl: './profile-resources.component.html',
+  styleUrl: './profile-resources.component.scss',
 })
-export class BusinessProfileResourcesComponent {
+export class ProfileResourcesComponent {
   profileResources$: Observable<IProfileResource[]>;
 
   constructor(

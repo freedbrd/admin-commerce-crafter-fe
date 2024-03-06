@@ -1,6 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ZorroModule } from '../../../../shared/modules/zorro/zorro.module';
+import { ZorroModule } from '@shared/modules/zorro/zorro.module';
 import {
   FormBuilder,
   FormGroup,
@@ -10,7 +10,7 @@ import {
 import { NZ_MODAL_DATA, NzModalRef } from 'ng-zorro-antd/modal';
 import {
   IBusinessProfile,
-} from '../../../../shared/interfaces/business-profile.interface';
+} from '@shared/interfaces/business-profile.interface';
 
 @Component({
   selector: 'app-business-profile-modal',

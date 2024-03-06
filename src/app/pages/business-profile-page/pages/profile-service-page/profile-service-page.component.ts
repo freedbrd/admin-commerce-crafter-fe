@@ -1,51 +1,44 @@
 import { ActivatedRoute } from '@angular/router';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ZorroModule } from '../../../../shared/modules/zorro/zorro.module';
+import { ZorroModule } from '@shared/modules/zorro/zorro.module';
 import {
   ImageFilePickerComponent,
-} from '../../../../shared/value-accessors/image-file-picker/image-file-picker.component';
+} from '@shared/value-accessors/image-file-picker/image-file-picker.component';
 import {
   MultiImageFilePickerComponent,
-} from '../../../../shared/value-accessors/multi-image-file-picker/multi-image-file-picker.component';
+} from '@shared/value-accessors/multi-image-file-picker/multi-image-file-picker.component';
 import {
   TransferItemComponent,
-} from '../../../../shared/value-accessors/transfer-item/transfer-item.component';
+} from '@shared/value-accessors/transfer-item/transfer-item.component';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import {
-  ServiceProfileService,
-} from '../../../../shared/services/service-profile.service';
-import {
-  base64ToBlobHelper,
-} from '../../../../shared/helpers/base64-to-blob.helper';
+import { base64ToBlobHelper } from '@shared/helpers/base64-to-blob.helper';
 import { select, Store } from '@ngrx/store';
-import {
-  selectProfile,
-  selectUserId,
-} from '../../../../shared/ngrx/auth/auth.selectors';
-import { BehaviorSubject, filter, Observable, of, switchMap, take } from 'rxjs';
+import { selectUserId } from '@shared/ngrx/auth/auth.selectors';
+import { BehaviorSubject, filter, Observable, take } from 'rxjs';
 import {
   IProfileResource,
   IProfileService,
-} from '../../../../shared/interfaces/business-profile.interface';
+} from '@shared/interfaces/business-profile.interface';
 import {
-  clearSelectedService, createServiceRequest, editServiceRequest,
+  clearSelectedService,
+  createServiceRequest,
+  editServiceRequest,
   getServiceByIdRequest,
-} from '../../../../shared/ngrx/business-profile-services/profile-services.actions';
+} from '@shared/ngrx/business-profile-services/profile-services.actions';
 import {
   currentProfileServiceSelector,
-} from '../../../../shared/ngrx/business-profile-services/profile-services.selector';
+} from '@shared/ngrx/business-profile-services/profile-services.selector';
 import {
   extractSupabaseFolders,
   isSupabaseImageUrl,
-} from '../../../../shared/helpers/is-supabase-image-url.helper';
-import { main } from '@angular/compiler-cli/src/main';
+} from '@shared/helpers/is-supabase-image-url.helper';
 import {
-  profileResourcesSelector
-} from '../../../../shared/ngrx/business-profile-resources/profile-resource.selector';
+  profileResourcesSelector,
+} from '@shared/ngrx/business-profile-resources/profile-resource.selector';
 import {
-  AvailableResourcesItemsPipe
-} from '../../../../shared/pipes/available-resources-items.pipe';
+  AvailableResourcesItemsPipe,
+} from '@shared/pipes/available-resources-items.pipe';
 
 @Component({
   selector: 'app-profile-service-page',

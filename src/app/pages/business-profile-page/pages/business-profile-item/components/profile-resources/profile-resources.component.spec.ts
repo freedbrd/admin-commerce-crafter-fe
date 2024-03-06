@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { BusinessProfileResourcesComponent } from './business-profile-resources.component';
+import { ProfileResourcesComponent } from './profile-resources.component';
 
 describe('BusinessProfileResourcesComponent', () => {
-  let component: BusinessProfileResourcesComponent;
-  let fixture: ComponentFixture<BusinessProfileResourcesComponent>;
+  let component: ProfileResourcesComponent;
+  let fixture: ComponentFixture<ProfileResourcesComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [BusinessProfileResourcesComponent]
+      imports: [ProfileResourcesComponent]
     })
     .compileComponents();
-    
-    fixture = TestBed.createComponent(BusinessProfileResourcesComponent);
+
+    fixture = TestBed.createComponent(ProfileResourcesComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

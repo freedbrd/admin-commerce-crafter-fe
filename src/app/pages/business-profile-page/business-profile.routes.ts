@@ -3,12 +3,12 @@ import { Routes } from '@angular/router';
 export const businessProfileRoutes: Routes = [
   {
     path: '',
-    loadComponent: () => import('../business-profile-page/pages/business-profiles/business-profiles.component').then(c => c.BusinessProfilesComponent),
+    loadComponent: () => import('./pages/business-profile-list/business-profiles-list.component').then(c => c.BusinessProfilesListComponent),
     pathMatch: 'full',
   },
   {
     path: ':businessId',
-    loadComponent: () => import('../business-profile-page/pages/business-profile/business-profile.component').then(c => c.BusinessProfileComponent)
+    loadComponent: () => import('./pages/business-profile-item/business-profile-item.component').then(c => c.BusinessProfileItemComponent)
   },
   {
     path: ':businessId/service/:serviceId',

@@ -1,27 +1,27 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Store } from '@ngrx/store';
-import { ZorroModule } from '../../../../shared/modules/zorro/zorro.module';
+import { ZorroModule } from '@shared/modules/zorro/zorro.module';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import {
   ImageFilePickerComponent,
-} from '../../../../shared/value-accessors/image-file-picker/image-file-picker.component';
+} from '@shared/value-accessors/image-file-picker/image-file-picker.component';
 import {
-  TimeslotPickerComponent
-} from '../../../../shared/value-accessors/timeslot-picker/timeslot-picker.component';
+  TimeslotPickerComponent,
+} from '@shared/value-accessors/timeslot-picker/timeslot-picker.component';
 import {
   clearCurrentProfileResource,
   createProfileResourceRequest,
   editProfileResourceRequest,
   getProfileResourceByIdRequest,
-} from '../../../../shared/ngrx/business-profile-resources/profile-resource.actions';
+} from '@shared/ngrx/business-profile-resources/profile-resource.actions';
 import {
-  IProfileResource
-} from '../../../../shared/interfaces/business-profile.interface';
+  IProfileResource,
+} from '@shared/interfaces/business-profile.interface';
 import {
-  currentResourceSelector
-} from '../../../../shared/ngrx/business-profile-resources/profile-resource.selector';
+  currentResourceSelector,
+} from '@shared/ngrx/business-profile-resources/profile-resource.selector';
 import { filter, Observable, take } from 'rxjs';
 
 @Component({
