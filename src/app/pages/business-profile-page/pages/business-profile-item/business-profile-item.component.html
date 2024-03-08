@@ -1,16 +1,31 @@
 <h2>Business Profile {{currentBusinessProfileName$ | async}}</h2>
 
 <div nz-row [nzGutter]="[15, 15]">
+  @defer (when (currentBusinessProfile$ | async)?.type === businessProfileType.SERVICE) {
     <div nz-col nzSpan="24">
-        <nz-card nzTitle="Services" [nzBordered]="false">
-            <app-profile-services></app-profile-services>
-        </nz-card>
+      <nz-card nzTitle="Services" [nzBordered]="false">
+        <app-profile-services></app-profile-services>
+      </nz-card>
     </div>
     <div nz-col nzSpan="24">
-        <nz-card nzTitle="Staff" [nzBordered]="false">
-            <app-profile-resources></app-profile-resources>
-        </nz-card>
+      <nz-card nzTitle="Staff" [nzBordered]="false">
+        <app-profile-resources></app-profile-resources>
+      </nz-card>
     </div>
+  }
+
+  @defer (when (currentBusinessProfile$ | async)?.type === businessProfileType.PRODUCT) {
+    <div nz-col nzSpan="24">
+      <nz-card nzTitle="Products" [nzBordered]="false">
+        <app-profile-product></app-profile-product>
+      </nz-card>
+    </div>
+    <div nz-col nzSpan="24">
+      <nz-card nzTitle="Products" [nzBordered]="false">
+        categories table
+      </nz-card>
+    </div>
+  }
 </div>
 
 
