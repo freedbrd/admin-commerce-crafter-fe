@@ -26,12 +26,12 @@ export const setProfileServices = createAction(
 
 export const deleteServiceRequest = createAction(
   ProfileServiceActionTypes.DELETE_SERVICE_REQUEST,
-  props<{ profileServices: IProfileService }>(),
+  props<{ profileService: IProfileService }>(),
 );
 
 export const deleteServiceSuccess = createAction(
   ProfileServiceActionTypes.DELETE_PROFILE_SERVICE_SUCCESS,
-  props<{ profileServices: IProfileService }>(),
+  props<{ profileService: IProfileService }>(),
 );
 
 export const editServiceRequest = createAction(
@@ -47,9 +47,7 @@ export const editServiceRequest = createAction(
 export const createServiceRequest = createAction(
   ProfileServiceActionTypes.CREATE_PROFILE_SERVICE_REQUEST,
   props<{
-    profileServices: IProfileService,
-    mainImage: Blob,
-    showCasesImages: Blob[]
+    profileServices: IProfileService
   }>(),
 );
 

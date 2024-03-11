@@ -6,28 +6,36 @@ import { en_US, provideNzI18n } from 'ng-zorro-antd/i18n';
 import { registerLocaleData } from '@angular/common';
 import en from '@angular/common/locales/en';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import {
+  HttpClientModule,
+  provideHttpClient,
+  withInterceptors,
+} from '@angular/common/http';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideState, provideStore } from '@ngrx/store';
 import { provideEffects } from '@ngrx/effects';
 import { authReducer } from './shared/ngrx/auth/auth.reducer';
 import { AuthEffects } from './shared/ngrx/auth/auth.effects';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
-import { environment } from '../environments/environment';
 import {
-  BusinessProfileEffects
+  BusinessProfileEffects,
 } from './shared/ngrx/business-profile/business-profile.effects';
 import {
-  businessProfileReducer
+  businessProfileReducer,
 } from './shared/ngrx/business-profile/business-profile.reducer';
-import { ProfileServiceEffects } from './shared/ngrx/business-profile-services/profile-services.effects';
-import { profileServicesReducer } from './shared/ngrx/business-profile-services/profile-services.reducer';
 import {
-  profileResourceReducer
+  ProfileServiceEffects,
+} from './shared/ngrx/business-profile-services/profile-services.effects';
+import {
+  profileServicesReducer,
+} from './shared/ngrx/business-profile-services/profile-services.reducer';
+import {
+  profileResourceReducer,
 } from './shared/ngrx/business-profile-resources/profile-resource.reducer';
 import {
-  ProfileResourceEffects
+  ProfileResourceEffects,
 } from './shared/ngrx/business-profile-resources/profile-resource.effects';
+import { authInterceptor } from '@shared/interceptors/auth.interceptor';
 
 registerLocaleData(en);
 
@@ -40,6 +48,9 @@ export const appConfig: ApplicationConfig = {
     importProvidersFrom(HttpClientModule),
     provideAnimations(),
     provideStore(),
+    provideHttpClient(withInterceptors([
+      authInterceptor,
+    ])),
     provideState({
         name: 'auth',
         reducer: authReducer

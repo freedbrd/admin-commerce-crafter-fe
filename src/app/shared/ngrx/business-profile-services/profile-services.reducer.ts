@@ -18,8 +18,8 @@ export const profileServicesReducer = createReducer(
   ),
   on(
     deleteServiceSuccess,
-    (state, {profileServices}) => profileServiceAdapter.removeOne(
-      profileServices.id, state),
+    (state, {profileService}) => profileServiceAdapter.removeOne(
+      profileService?.id, state),
   ),
   on(
     getServiceByIdSuccess,

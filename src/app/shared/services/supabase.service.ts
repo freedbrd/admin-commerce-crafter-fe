@@ -21,11 +21,23 @@ import { FileObject } from '@supabase/storage-js/src/lib/types';
   providedIn: 'root',
 })
 export class SupabaseService {
-  private readonly supabase: SupabaseClient;
+  public readonly supabase: SupabaseClient;
 
   constructor() {
     this.supabase = createClient(environment.supabaseUrl,
       environment.supabaseKey);
+  }
+
+  getSession() {
+    return from(this.supabase.auth.getSession()).pipe(
+      switchMap(res => {
+        if (res?.error) {
+          return throwError(() => res?.error);
+        }
+
+        return of(res?.data);
+      }),
+    );
   }
 
   onAuthStateChange(callback: (
@@ -39,11 +51,11 @@ export class SupabaseService {
       password,
     })).pipe(
       switchMap(res => {
-        if (res.error) {
-          return throwError(() => res.error);
+        if (res?.error) {
+          return throwError(() => res?.error);
         }
 
-        return of(res.data);
+        return of(res?.data);
       }),
     );
   }
@@ -66,11 +78,11 @@ export class SupabaseService {
       password,
     })).pipe(
       switchMap(res => {
-        if (res.error) {
-          return throwError(() => res.error);
+        if (res?.error) {
+          return throwError(() => res?.error);
         }
 
-        return of(res.data);
+        return of(res?.data);
       }),
     );
   }

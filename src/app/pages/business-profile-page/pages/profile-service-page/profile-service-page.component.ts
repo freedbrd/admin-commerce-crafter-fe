@@ -39,6 +39,9 @@ import {
 import {
   AvailableResourcesItemsPipe,
 } from '@shared/pipes/available-resources-items.pipe';
+import {
+  ServiceProfileService
+} from '@shared/services/service-profile.service';
 
 @Component({
   selector: 'app-profile-service-page',
@@ -97,22 +100,18 @@ export class ProfileServicePageComponent implements OnInit, OnDestroy {
 
   onSubmit() {
     const {businessId} = this.activatedRoute.snapshot.params;
-
     const newProfileService = this.form.getRawValue() as IProfileService;
-    const mainImageBlob = base64ToBlobHelper(newProfileService.main_image);
-    const showChaseImagesBlob = newProfileService.showcase_images.map(
-      item => base64ToBlobHelper(item)).filter(item => item) || [];
 
     if (this.currentProfileService) {
-      this.store.dispatch(editServiceRequest({
-        profileServices: {
-          ...this.currentProfileService,
-          ...this.form.getRawValue(),
-        },
-        mainImage: mainImageBlob,
-        showCasesImages: showChaseImagesBlob,
-        imagesToDelete: this.imagesToRemoveUrls,
-      }));
+      // this.store.dispatch(editServiceRequest({
+      //   profileServices: {
+      //     ...this.currentProfileService,
+      //     ...this.form.getRawValue(),
+      //   },
+      //   mainImage: mainImageBlob,
+      //   showCasesImages: showChaseImagesBlob,
+      //   imagesToDelete: this.imagesToRemoveUrls,
+      // }));
 
       return;
     }
@@ -120,13 +119,10 @@ export class ProfileServicePageComponent implements OnInit, OnDestroy {
     this.store.dispatch(createServiceRequest({
       profileServices: {
         ...newProfileService,
-        main_image: '',
-        showcase_images: [],
         business_profile_id: businessId,
         user_id: this.userId$.value,
-      },
-      mainImage: mainImageBlob || null,
-      showCasesImages: showChaseImagesBlob,
+        active: true,
+      }
     }));
   }
 

@@ -1,20 +1,21 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import {
-  ZorroModule,
-} from '../../../../../../shared/modules/zorro/zorro.module';
+import { ZorroModule } from '@shared/modules/zorro/zorro.module';
 import { Observable } from 'rxjs';
 import {
   IProfileService,
-} from '../../../../../../shared/interfaces/business-profile.interface';
+} from '@shared/interfaces/business-profile.interface';
 import { Store } from '@ngrx/store';
 import {
-  deleteServiceRequest,
-} from '../../../../../../shared/ngrx/business-profile-services/profile-services.actions';
-import {
   profileServicesSelector,
-} from '../../../../../../shared/ngrx/business-profile-services/profile-services.selector';
+} from '@shared/ngrx/business-profile-services/profile-services.selector';
 import { RouterModule } from '@angular/router';
+import {
+  ServiceProfileService,
+} from '@shared/services/service-profile.service';
+import {
+  deleteServiceRequest
+} from '@shared/ngrx/business-profile-services/profile-services.actions';
 
 @Component({
   selector: 'app-profile-services',
@@ -28,13 +29,14 @@ export class ProfileServicesComponent {
 
   constructor(
     private store: Store,
+    private serviceProfileService: ServiceProfileService
   ) {
     this.profileServicesSelector$ = this.store.select(profileServicesSelector)
   }
 
-  delete(profileServices: IProfileService) {
+  delete(profileService: IProfileService) {
     this.store.dispatch(deleteServiceRequest({
-      profileServices
+      profileService
     }))
   }
 }

@@ -10,7 +10,7 @@ export class BusinessActivityService {
     private readonly tableName = 'services';
 
     constructor(
-        private supabaseService: SupabaseService
+        private supabaseService: SupabaseService,
     ) {
     }
 

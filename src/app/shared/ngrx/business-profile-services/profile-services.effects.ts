@@ -32,33 +32,37 @@ import { ServiceProfileService } from '../../services/service-profile.service';
 import { Router } from '@angular/router';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
 import { SupabaseService } from '../../services/supabase.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Injectable()
 export class ProfileServiceEffects {
   deleteActivityRequest$ = createEffect(() => this.actions$.pipe(
     ofType(deleteServiceRequest),
-    switchMap(
-      ({profileServices}) => this.businessActivityService.deleteBusinessActivity(
-        profileServices?.id).pipe(
-        switchMap(() => {
-          return this.supabaseService.clearFolder('assets', `${profileServices?.user_id}/${profileServices?.business_profile_id}/${profileServices?.id}`)
+    switchMap(({profileService}) => {
+      return this.serviceProfileService.deleteService(profileService).pipe(
+        map(() => deleteServiceSuccess({profileService})),
+        catchError((err: HttpErrorResponse) => {
+          this.nzNotificationServices.error(`${err.statusText}.`, `${err?.error?.error}. ${err?.error?.details}`)
+          return throwError(() => err)
         }),
-        map(() => deleteServiceSuccess({profileServices})),
-      )),
+      )
+    })
   ));
 
   deleteServiceSuccess$ = createEffect(() => this.actions$.pipe(
     ofType(deleteServiceSuccess),
     withLatestFrom(this.store.select(currentBusinessProfile)),
-    map(([{profileServices}, businessProfile]) => {
-      const services = businessProfile.services;
-      const updatedServices = services.filter(
-        item => item.id !== profileServices.id);
+    map(([{profileService}, businessProfile]) => {
+      const services = businessProfile?.services;
+      const updatedServices = services?.filter(
+        item => item?.id !== profileService?.id);
 
       const updatedBusinessProfile: IBusinessProfile = {
         ...businessProfile,
         services: updatedServices,
       };
+
+      this.nzNotificationServices.success('Service was removed', '')
 
       return editBusinessProfileSuccess({
         businessProfile: updatedBusinessProfile,
@@ -86,20 +90,18 @@ export class ProfileServiceEffects {
 
   createService$ = createEffect(() => this.actions$.pipe(
     ofType(createServiceRequest),
-    switchMap(({profileServices, mainImage, showCasesImages}) => {
-      return this.serviceProfileService.createService(profileServices,
-        mainImage, showCasesImages, profileServices.user_id).pipe(
+    switchMap(({profileServices}) => {
+      return this.serviceProfileService.createService(profileServices).pipe(
         tap(() => {
           this.nzNotificationServices.success('Service was created', '');
-        }),
-        finalize(() => {
           this.router.navigate(
             ['business-profiles', profileServices?.business_profile_id]);
         }),
       );
     }),
-    catchError((err) => {
-      this.nzNotificationServices.error('Service was not created. Try again later', '')
+    catchError((err: HttpErrorResponse) => {
+      console.log(err);
+      this.nzNotificationServices.error(`${err.statusText}.`, `${err?.error?.error}. ${err?.error?.details}`)
       return throwError(() => err)
     }),
   ), { dispatch: false })

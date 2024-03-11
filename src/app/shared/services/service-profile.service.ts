@@ -5,57 +5,31 @@ import { of, switchMap } from 'rxjs';
 import {
   extractSupabaseFolders
 } from '../helpers/is-supabase-image-url.helper';
+import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ServiceProfileService {
   constructor(
-    private supabaseService: SupabaseService
+    private supabaseService: SupabaseService,
+    private http: HttpClient
   ) {
   }
 
-  createService(profileService: IProfileService, mainImage: Blob, showCaseImages: Blob[], userId: string) {
-    let folderPath = '';
-    let mainImagePath = '';
-    let savedProfileService: IProfileService;
+  deleteService(profileService: IProfileService) {
+    return this.http.delete(`${environment.backendAPI}/api/service/${profileService?.id}`, {
+      body: profileService
+    })
+  }
 
-    return this.supabaseService.insertAndSelect<IProfileService[]>('services', profileService, '*').pipe(
-      switchMap((profileService) => {
-        [savedProfileService] = profileService || [];
-        folderPath = `${userId}/${savedProfileService.business_profile_id}/${savedProfileService.id}`;
-
-        return mainImage ? this.uploadMainImage(
-          folderPath,
-          mainImage
-        ) : of(null)
-      }),
-      switchMap((mainImageList) => {
-        const [mainImageResult] = mainImageList || [];
-        mainImagePath = mainImageResult?.fileUrl
-        return showCaseImages?.length ? this.uploadMultipleImages(folderPath, showCaseImages) : of(null)
-      }),
-      switchMap(images => {
-        const imagesUrl = images?.map(item => item?.fileUrl)
-
-        if(!mainImagePath && !imagesUrl) {
-          return of(null)
-        }
-
-
-        const updatedProfileService: IProfileService = {
-          main_image: mainImagePath || '',
-          showcase_images: imagesUrl || [],
-          id: savedProfileService.id
-        } as IProfileService;
-
-        return this.updateService(updatedProfileService)
-      })
-    )
+  createService(profileService: IProfileService) {
+    return this.http.post(`${environment.backendAPI}/api/service`, profileService)
   }
 
   editService(profileService: IProfileService, mainImage: Blob, showCaseImages: Blob[], userId: string) {
-    let folderPath = `${userId}/${profileService.business_profile_id}/${profileService.id}`;
+    let folderPath = `${userId}/${profileService?.business_profile_id}/${profileService?.id}`;
     let mainImagePath = '';
 
     return (mainImage ? this.uploadMainImage(folderPath, mainImage) : of(null)).pipe(
@@ -75,7 +49,7 @@ export class ServiceProfileService {
           ...profileService,
           main_image: mainImagePath || profileService?.main_image,
           showcase_images: showcaseImages,
-          id: profileService.id
+          id: profileService?.id
         } as IProfileService;
 
         return this.updateService(updatedProfileService)
