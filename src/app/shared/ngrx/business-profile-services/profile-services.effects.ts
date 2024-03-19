@@ -72,21 +72,20 @@ export class ProfileServiceEffects {
 
   editService$ = createEffect(() => this.actions$.pipe(
     ofType(editServiceRequest),
-    switchMap(({profileServices, mainImage, showCasesImages, imagesToDelete}) => {
-      return this.serviceProfileService.editService(profileServices, mainImage, showCasesImages, profileServices.user_id).pipe(
-        map(() => deleteServiceImages({imagesToDelete}))
-      ).pipe(
-        tap(() => this.router.navigate(['business-profiles', profileServices?.business_profile_id])),
-        finalize(() => {
+    switchMap(({profileServices, imagesToDelete}) => {
+      return this.serviceProfileService.editService(profileServices, imagesToDelete).pipe(
+        tap(() => {
           this.nzNotificationServices.success('Service was updated', '');
-        })
+          this.router.navigate(
+            ['business-profiles', profileServices?.business_profile_id]);
+        }),
       )
     }),
     catchError((err) => {
       this.nzNotificationServices.error('Service was not updated. Try again later', '')
       return throwError(() => err)
     }),
-  ))
+  ), {dispatch: false})
 
   createService$ = createEffect(() => this.actions$.pipe(
     ofType(createServiceRequest),

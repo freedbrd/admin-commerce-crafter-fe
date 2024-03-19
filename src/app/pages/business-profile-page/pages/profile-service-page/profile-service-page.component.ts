@@ -11,7 +11,12 @@ import {
 import {
   TransferItemComponent,
 } from '@shared/value-accessors/transfer-item/transfer-item.component';
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { base64ToBlobHelper } from '@shared/helpers/base64-to-blob.helper';
 import { select, Store } from '@ngrx/store';
 import { selectUserId } from '@shared/ngrx/auth/auth.selectors';
@@ -59,15 +64,14 @@ import {
   styleUrl: './profile-service-page.component.scss',
 })
 export class ProfileServicePageComponent implements OnInit, OnDestroy {
+  profileResources$: Observable<IProfileResource[]>
+
   form: FormGroup;
   isLoading = false;
-
-  profileResources$: Observable<IProfileResource[]>;
+  currentProfileService: IProfileService;
 
   private userId$ = new BehaviorSubject<string | null>(null);
   private currentProfileService$: Observable<IProfileService>;
-
-  private currentProfileService: IProfileService;
   private imagesToRemoveUrls: string[] = [];
 
   mockArray = [
@@ -82,7 +86,6 @@ export class ProfileServicePageComponent implements OnInit, OnDestroy {
   ) {
     this.store.pipe(select(selectUserId)).subscribe(this.userId$);
     this.profileResources$ = this.store.select(profileResourcesSelector)
-
     this.currentProfileService$ = this.store.select(
       currentProfileServiceSelector);
   }
@@ -103,15 +106,13 @@ export class ProfileServicePageComponent implements OnInit, OnDestroy {
     const newProfileService = this.form.getRawValue() as IProfileService;
 
     if (this.currentProfileService) {
-      // this.store.dispatch(editServiceRequest({
-      //   profileServices: {
-      //     ...this.currentProfileService,
-      //     ...this.form.getRawValue(),
-      //   },
-      //   mainImage: mainImageBlob,
-      //   showCasesImages: showChaseImagesBlob,
-      //   imagesToDelete: this.imagesToRemoveUrls,
-      // }));
+      this.store.dispatch(editServiceRequest({
+        profileServices: {
+          ...this.currentProfileService,
+          ...this.form.getRawValue(),
+        },
+        imagesToDelete: this.imagesToRemoveUrls,
+      }));
 
       return;
     }
@@ -145,8 +146,8 @@ export class ProfileServicePageComponent implements OnInit, OnDestroy {
 
   private initForm() {
     this.form = this.fb.group({
-      name: [''],
-      price: [null],
+      name: ['', [Validators.required]],
+      price: [null, [Validators.required, Validators.min(0)]],
       description: [''],
       showcase_images: [[]],
       main_image: [null],

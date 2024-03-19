@@ -28,33 +28,11 @@ export class ServiceProfileService {
     return this.http.post(`${environment.backendAPI}/api/service`, profileService)
   }
 
-  editService(profileService: IProfileService, mainImage: Blob, showCaseImages: Blob[], userId: string) {
-    let folderPath = `${userId}/${profileService?.business_profile_id}/${profileService?.id}`;
-    let mainImagePath = '';
-
-    return (mainImage ? this.uploadMainImage(folderPath, mainImage) : of(null)).pipe(
-      switchMap((mainImageList) => {
-        const [mainImageResult] = mainImageList || [];
-        mainImagePath = mainImageResult?.fileUrl
-        return showCaseImages?.length ? this.uploadMultipleImages(folderPath, showCaseImages) : of(null)
-      }),
-      switchMap((images) => {
-        const imagesUrl = images?.map(item => item?.fileUrl) || [];
-        const showcaseImageSupabaseUrls = profileService?.showcase_images?.filter(item => !!extractSupabaseFolders(item))
-        const showcaseImages = showcaseImageSupabaseUrls?.length
-          ? [...showcaseImageSupabaseUrls, ...imagesUrl]
-          : imagesUrl
-
-        const updatedProfileService: IProfileService = {
-          ...profileService,
-          main_image: mainImagePath || profileService?.main_image,
-          showcase_images: showcaseImages,
-          id: profileService?.id
-        } as IProfileService;
-
-        return this.updateService(updatedProfileService)
-      })
-    )
+  editService(profileService: IProfileService, imagesToDelete: string[] = []) {
+    return this.http.put(`${environment.backendAPI}/api/service`, {
+      profileService,
+      imagesToDelete
+    })
   }
 
   getProfileServiceById(serviceId: string) {

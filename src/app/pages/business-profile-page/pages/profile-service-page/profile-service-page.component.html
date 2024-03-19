@@ -4,18 +4,19 @@
       [formGroup]="form">
   <div nz-col
        nzSpan="24">
-    <h2>Profile Service: New</h2>
+    <h2>Profile Service: {{ currentProfileService?.name || 'New' }}</h2>
   </div>
   <div nz-col
        nzSpan="24">
     <nz-form-item>
       <nz-form-label nzSpan="24">Main Image</nz-form-label>
       <nz-form-control nzSpan="24">
-        <app-image-file-picker (removeImage)="handleRemoveImageUrl($event)" formControlName="main_image"></app-image-file-picker>
+        <app-image-file-picker (removeImage)="handleRemoveImageUrl($event)"
+                               formControlName="main_image"></app-image-file-picker>
       </nz-form-control>
     </nz-form-item>
     <nz-form-item>
-      <nz-form-label nzSpan="24">Service name</nz-form-label>
+      <nz-form-label nzSpan="24">Service name *</nz-form-label>
       <nz-form-control nzSpan="24">
         <input nz-input
                formControlName="name"
@@ -23,7 +24,7 @@
       </nz-form-control>
     </nz-form-item>
     <nz-form-item>
-      <nz-form-label nzSpan="24">Price</nz-form-label>
+      <nz-form-label nzSpan="24">Price *</nz-form-label>
       <nz-form-control nzSpan="24">
         <input nz-input
                formControlName="price"
@@ -40,21 +41,24 @@
       </nz-form-control>
     </nz-form-item>
     <nz-form-item>
-      <nz-form-label nzSpan="24">Staff</nz-form-label>
+      <nz-form-label nzSpan="24">Resources</nz-form-label>
       <nz-form-control nzSpan="24">
-        <app-transfer-item formControlName="service_resource_ids" [availableItems]="(profileResources$ | async) | availableResourcesItems"></app-transfer-item>
+        <app-transfer-item formControlName="service_resource_ids"
+                           [availableItems]="(profileResources$ | async) | availableResourcesItems"></app-transfer-item>
       </nz-form-control>
     </nz-form-item>
     <nz-form-item>
       <nz-form-label nzSpan="24">Portfolio</nz-form-label>
       <nz-form-control nzSpan="24">
-        <app-multi-image-file-picker (removeImage)="handleRemoveImageUrl($event)" formControlName="showcase_images"></app-multi-image-file-picker>
+        <app-multi-image-file-picker (removeImage)="handleRemoveImageUrl($event)"
+                                     formControlName="showcase_images"></app-multi-image-file-picker>
       </nz-form-control>
     </nz-form-item>
   </div>
   <div nz-col
        nzSpan="24">
     <button nz-button
+            [disabled]="form.invalid"
             nzType="primary">Save
     </button>
   </div>

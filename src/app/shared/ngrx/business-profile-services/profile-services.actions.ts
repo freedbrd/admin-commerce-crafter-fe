@@ -38,8 +38,6 @@ export const editServiceRequest = createAction(
   ProfileServiceActionTypes.EDIT_PROFILE_SERVICE_REQUEST,
   props<{
     profileServices: IProfileService,
-    mainImage: Blob,
-    showCasesImages: Blob[],
     imagesToDelete: string[]
   }>(),
 );
