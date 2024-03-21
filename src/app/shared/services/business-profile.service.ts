@@ -39,7 +39,6 @@ export class BusinessProfileService {
 
   publishBusinessProfile(data: IBusinessProfile) {
     return this.http.post<IBusinessProfile>(`${environment.backendAPI}/api/business-profile/activate/${data?.id}`, {
-      activate: true,
       user_id: data.user_id
     })
   }

@@ -24,6 +24,7 @@ import { SupabaseService } from '../../services/supabase.service';
 import {
   setProfileResourceList
 } from '../business-profile-resources/profile-resource.actions';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Injectable()
 export class BusinessProfileEffects {
@@ -110,7 +111,7 @@ export class BusinessProfileEffects {
           map((value) => {
             return editBusinessProfileSuccess({businessProfile: value})
           }),
-          catchError((err) => {
+          catchError((err: HttpErrorResponse) => {
             this.nzNotificationService.error('Error', err?.error?.error)
             return throwError(() => err)
           }),
